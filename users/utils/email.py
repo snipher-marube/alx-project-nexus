@@ -20,17 +20,22 @@ class EmailVerification:
         Send email verification link to user with enhanced error handling
         """
         try:
-            # Generate and save token FIRST
-            user.verification_token = "temp"  # Initialize field
-            user.save(update_fields=['verification_token'])
-            
-            # Now generate token with the saved state
+            # Generate token FIRST to ensure it is consistent with the user's state
             token = email_verification_token_generator.make_token(user)
+            if not token:
+                logger.error("Failed to generate verification token")
+                raise ValidationError('Failed to generate verification token')
+            # Store the token and timestamp in the user model
             user.verification_token = token
             user.verification_token_created_at = timezone.now()
-            user.save(update_fields=['verification_token', 'verification_token_created_at'])
-            
-            logger.info(f"Token generated and saved for {user.email}")
+            user.save(update_fields=['verification_token', 'verification_token_created_at'])    
+            logger.debug(f"Generated token: {token} for user: {user.email}")
+            if not user.email:
+                logger.error("User email is not set")
+                raise ValidationError(_('User email is not set'))
+            if not user.is_active:
+                logger.error("User account is not active")
+                raise ValidationError(_('User account is not active'))
             
             # Build verification URL
             verification_url = request.build_absolute_uri(

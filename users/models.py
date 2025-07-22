@@ -184,28 +184,7 @@ class User(AbstractUser):
             self.username = User.objects._generate_unique_username(self.email)
         super().save(*args, **kwargs)
 
-    '''def send_verification_email(self, request):
-        token = str(uuid.uuid4())
-        self.verification_token = token
-        self.save()
-        
-        subject = 'Verify your email address'
-        html_message = render_to_string('emails/verification_email.html', {
-            'user': self,
-            'verification_url': request.build_absolute_uri(
-                f'/api/v1/auth/verify-email/{token}/'
-            ),
-        })
-        plain_message = strip_tags(html_message)
-        
-        send_mail(
-            subject,
-            plain_message,
-            'noreply@yourdomain.com',
-            [self.email],
-            html_message=html_message,
-            fail_silently=False,
-        )'''
+    
 
 
 class Profile(models.Model):

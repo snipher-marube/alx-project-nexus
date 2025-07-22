@@ -213,7 +213,7 @@ from rest_framework.permissions import AllowAny
 
 schema_view = get_schema_view(
     openapi.Info(
-        title="Your API Title",
+        title="E-commerce API",
         default_version='v1',
         description="API documentation",
     ),
