@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -38,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'knox',
+    "corsheaders",
     'products',
     'users',
     'orders',
@@ -47,11 +50,13 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'users.middleware.AccountVerificationMiddleware',
 ]
 
 ROOT_URLCONF = 'ecommerce.urls'
@@ -59,7 +64,7 @@ ROOT_URLCONF = 'ecommerce.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -125,3 +130,55 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'knox.auth.TokenAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+    'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.AnonRateThrottle',
+        'rest_framework.throttling.UserRateThrottle'
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': '100/day',
+        'user': '1000/day',
+        'burst': '5/minute',
+        'sustained': '100/hour'
+    }
+}
+
+# Knox settings
+REST_KNOX = {
+    'USER_SERIALIZER': 'users.serializers.UserSerializer',
+    'TOKEN_TTL': None,  # Token never expires by default
+    'AUTO_REFRESH': False,
+    'MIN_REFRESH_INTERVAL': 60,  # Minimum seconds between refresh
+    'AUTH_HEADER_PREFIX': 'Token',
+}
+
+AUTH_USER_MODEL = 'users.User'
+
+
+# Sending email settings
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com' # your smtp provider
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')  # Your email address
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')  # Your email password
+
+# Retrieve variables from the environment
+MPESA_CONSUMER_KEY = config("CONSUMER_KEY")
+MPESA_CONSUMER_SECRET = config("CONSUMER_SECRET")
+MPESA_PASSKEY = config("MPESA_PASSKEY")
+
+MPESA_SHORTCODE = config("MPESA_SHORTCODE")
+MPESA_CALLBACK_URL = config("CALLBACK_URL")
+MPESA_BASE_URL = config("MPESA_BASE_URL")
+
+# Frontend URLs (for email templates)
+FRONTEND_VERIFICATION_SUCCESS_URL = 'https://yourapp.com/verification-success/'
+FRONTEND_VERIFICATION_FAILED_URL = 'https://yourapp.com/verification-failed/'
