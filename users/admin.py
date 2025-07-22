@@ -1,8 +1,4 @@
 from django.contrib import admin
-
-# Register your models here.
-# users/admin.py
-from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.utils.translation import gettext_lazy as _
 from django.utils.html import format_html
@@ -21,7 +17,7 @@ class UserProfileInline(admin.StackedInline):
     can_delete = False
     verbose_name_plural = _('Profile')
     fk_name = 'user'
-    readonly_fields = ('created_at', 'updated_at')
+    readonly_fields = ('created_at', 'updated_at', 'profile_picture_display')
     fieldsets = (
         (_('Personal Info'), {
             'fields': ('gender', 'date_of_birth', 'profile_picture_display', 'profile_picture', 'bio')
@@ -125,7 +121,7 @@ class ProfileAdmin(admin.ModelAdmin):
     list_display = ('user_email', 'user_full_name', 'gender', 'age', 'country', 'city', 'created_at')
     list_filter = ('gender', 'country', 'city', 'created_at')
     search_fields = ('user__email', 'user__first_name', 'user__last_name', 'address', 'city', 'country')
-    readonly_fields = ('user_link', 'created_at', 'updated_at', 'age')
+    readonly_fields = ('user_link', 'created_at', 'updated_at', 'age', 'profile_picture_display')
     fieldsets = (
         (None, {
             'fields': ('user_link', 'gender', 'date_of_birth', 'age')
