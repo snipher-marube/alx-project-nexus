@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'knox',
     "corsheaders",
+    'drf_yasg',
     'products',
     'users',
     'orders',
@@ -188,3 +189,34 @@ FRONTEND_VERIFICATION_SUCCESS_URL = 'https://yourapp.com/verification-success/'
 FRONTEND_VERIFICATION_FAILED_URL = 'https://yourapp.com/verification-failed/'
 SITE_NAME = 'Your E-commerce Site'
 REPLY_TO_EMAIL = 'no-reply@yourapp.com'
+
+# SWAGGER SETTINGS
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'Bearer': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header'
+        }
+    },
+    'USE_SESSION_AUTH': False,
+    'DEFAULT_AUTO_SCHEMA_CLASS': 'drf_yasg.inspectors.SwaggerAutoSchema',
+    'DEFAULT_GENERATOR_CLASS': 'drf_yasg.generators.OpenAPISchemaGenerator',
+    'LOGIN_URL': '/admin/login/',  # Optional: Django admin login
+    'LOGOUT_URL': '/admin/logout/',  # Optional: Django admin logout
+}
+
+# Temporarily disable permissions for docs (development only)
+from drf_yasg.views import get_schema_view
+from drf_yasg import openapi
+from rest_framework.permissions import AllowAny
+
+schema_view = get_schema_view(
+    openapi.Info(
+        title="Your API Title",
+        default_version='v1',
+        description="API documentation",
+    ),
+    public=True,
+    permission_classes=[AllowAny],  # 👈 Critical for local access
+)
