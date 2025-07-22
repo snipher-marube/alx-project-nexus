@@ -50,6 +50,17 @@ class UserManager(BaseUserManager):
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
         extra_fields.setdefault('is_active', True)
+        extra_fields.setdefault('is_verified', True)
+        extra_fields.setdefault('user_type', 'ADMIN')
+        if extra_fields.get('is_staff') is not True:
+            raise ValueError(_('Superuser must have is_staff=True.'))
+        if extra_fields.get('is_superuser') is not True:
+            raise ValueError(_('Superuser must have is_superuser=True.'))
+        if extra_fields.get('user_type') != 'ADMIN':
+            raise ValueError(_('Superuser must have user_type set to ADMIN.'))
+        if not password:
+            raise ValueError(_('Superuser must have a password.'))
+        
         return self._create_user(email, password, **extra_fields)
 
     def _generate_unique_username(self, email):
