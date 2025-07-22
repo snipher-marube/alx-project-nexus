@@ -26,3 +26,8 @@ DATABASES = {
         }
     }
 }
+
+TEST = {
+    'NAME': config('TEST_DATABASE_NAME'),  # Use an existing database
+    'CHARSET': 'UTF8',
+}
