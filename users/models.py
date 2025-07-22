@@ -115,14 +115,12 @@ class User(AbstractUser):
     )
     verification_token = models.CharField(
         _('verification token'),
-        unique=True,
-        max_length=100, 
+        max_length=255, 
         blank=True, 
         null=True
     )
     verification_token_created_at = models.DateTimeField(
         _('verification token created at'),
-        auto_now_add=True,
         blank=True,
         null=True
     )

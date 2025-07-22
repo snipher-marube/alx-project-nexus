@@ -3,7 +3,9 @@ from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 from rest_framework.throttling import AnonRateThrottle
-from users.utils.email import EmailVerification
+import logging
+from users.utils.tokens import email_verification_token_generator
+
 from .serializers import (
     UserRegistrationSerializer,
     UserLoginSerializer,
@@ -13,6 +15,7 @@ from .serializers import (
 )
 from .models import User
 
+logger = logging.getLogger(__name__)
 
 class ResendVerificationThrottle(AnonRateThrottle):
     scope = 'resend_verification'
@@ -95,25 +98,7 @@ class UserAPIView(generics.RetrieveAPIView):
     def get_object(self):
         return self.request.user
     
-class EmailVerificationAPIView(generics.GenericAPIView):
-    permission_classes = [permissions.AllowAny]
-    
-    def get(self, request, token):
-        try:
-            user = User.objects.get(verification_token=token)
-            user.is_verified = True
-            user.verification_token = None
-            user.save()
-            return Response(
-                {"message": "Email successfully verified"},
-                status=status.HTTP_200_OK
-            )
-        except User.DoesNotExist:
-            return Response(
-                {"error": "Invalid verification token"},
-                status=status.HTTP_400_BAD_REQUEST
-            )
-        
+
 
 
 class EmailVerificationAPIView(generics.GenericAPIView):
@@ -121,15 +106,30 @@ class EmailVerificationAPIView(generics.GenericAPIView):
 
     def get(self, request, user_id, token):
         try:
+            logger.info(f"Verification request for user {user_id}")
+            
+            from users.utils.email import EmailVerification
             user = EmailVerification.verify_token(user_id, token)
+            
             return Response(
-                {"detail": "Email successfully verified"},
+                {
+                    "detail": "Email successfully verified",
+                    "user": UserSerializer(user).data
+                },
                 status=status.HTTP_200_OK
             )
+            
         except ValidationError as e:
+            logger.error(f"Verification failed: {str(e)}")
             return Response(
                 {"detail": str(e)},
                 status=status.HTTP_400_BAD_REQUEST
+            )
+        except Exception as e:
+            logger.critical(f"Unexpected verification error: {str(e)}", exc_info=True)
+            return Response(
+                {"detail": "An error occurred during verification"},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
 
 

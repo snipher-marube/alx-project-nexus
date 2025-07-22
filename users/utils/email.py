@@ -1,78 +1,111 @@
-import uuid
 from django.core.mail import EmailMultiAlternatives
+from django.utils.translation import gettext_lazy as _
+from django.conf import settings
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from django.conf import settings
 from django.utils import timezone
 from django.core.exceptions import ValidationError
-from .tokens import email_verification_token_generator
 from users.models import User
+from users.utils.tokens import email_verification_token_generator
+from .tokens import email_verification_token_generator
+import logging
+
+logger = logging.getLogger(__name__)
 
 class EmailVerification:
     @staticmethod
     def send_verification_email(user, request):
         """
-        Send email verification link to user
+        Send email verification link to user with enhanced error handling
         """
-        # Generate token and set expiration (24 hours)
-        token = email_verification_token_generator.make_token(user)
-        user.verification_token = token
-        user.verification_token_created_at = timezone.now()
-        user.save()
-
-        # Prepare email context
-        context = {
-            'user': user,
-            'verification_url': request.build_absolute_uri(
+        try:
+            # Generate and save token FIRST
+            user.verification_token = "temp"  # Initialize field
+            user.save(update_fields=['verification_token'])
+            
+            # Now generate token with the saved state
+            token = email_verification_token_generator.make_token(user)
+            user.verification_token = token
+            user.verification_token_created_at = timezone.now()
+            user.save(update_fields=['verification_token', 'verification_token_created_at'])
+            
+            logger.info(f"Token generated and saved for {user.email}")
+            
+            # Build verification URL
+            verification_url = request.build_absolute_uri(
                 f'/api/v1/auth/verify-email/{user.id}/{token}/'
-            ),
-            'site_name': settings.SITE_NAME
-        }
-
-        # Render email templates
-        subject = 'Verify your email address'
-        html_message = render_to_string('emails/verification_email.html', context)
-        plain_message = strip_tags(html_message)
-
-        # Send email
-        email = EmailMultiAlternatives(
-            subject=subject,
-            body=plain_message,
-            from_email=settings.DEFAULT_FROM_EMAIL,
-            to=[user.email],
-            reply_to=[settings.REPLY_TO_EMAIL],
-            headers={
-                'X-Priority': '1',
-                'X-MSMail-Priority': 'High',
-                'X-Mailer': 'Django',
-                'X-Auto-Response-Suppress': 'OOF, DR, RN, NRN, AutoReply',
+            )
+            logger.debug(f"Verification URL: {verification_url}")
+            
+            # Prepare email context
+            context = {
+                'user': user,
+                'verification_url': verification_url,
+                'site_name': settings.SITE_NAME
             }
-        )
-        email.attach_alternative(html_message, "text/html")
-        email.send()
+
+            # Render email templates
+            subject = 'Verify your email address'
+            html_message = render_to_string('emails/verification_email.html', context)
+            plain_message = strip_tags(html_message)
+
+            # Send email
+            email = EmailMultiAlternatives(
+                subject=subject,
+                body=plain_message,
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                to=[user.email],
+                reply_to=[settings.REPLY_TO_EMAIL],
+            )
+            email.attach_alternative(html_message, "text/html")
+            email.send()
+            
+            logger.info(f"Verification email sent to {user.email}")
+            
+            return True
+            
+        except Exception as e:
+            logger.error(f"Failed to send verification email: {str(e)}", exc_info=True)
+            raise ValidationError('Failed to send verification email') from e
 
     @staticmethod
     def verify_token(user_id, token):
         """
-        Verify the email verification token
+        More robust verification process
         """
         try:
             user = User.objects.get(pk=user_id)
+            
+            if user.is_verified:
+                logger.warning("User already verified")
+                return user  # Consider this success case
+                
+            if not user.verification_token:
+                logger.error("No verification token exists")
+                raise ValidationError('No verification token exists')
+                
+            # Critical debug logs
+            logger.debug(f"Stored token: {user.verification_token}")
+            logger.debug(f"Provided token: {token}")
+            logger.debug(f"Token created at: {user.verification_token_created_at}")
+            
+            if not email_verification_token_generator.check_token(user, token):
+                logger.error("Token validation failed")
+                raise ValidationError('Invalid or expired verification token')
+                
+            # Mark as verified
+            user.is_verified = True
+            user.verification_token = None
+            user.verification_token_created_at = None
+            user.save()
+            
+            logger.info("User successfully verified")
+            return user
+            
         except User.DoesNotExist:
+            logger.error(f"User {user_id} not found")
             raise ValidationError('Invalid user ID')
-
-        # Check if token is valid and not expired
-        if not email_verification_token_generator.check_token(user, token):
-            raise ValidationError('Invalid or expired verification token')
-
-        # Check if token was created more than 24 hours ago
-        if (timezone.now() - user.verification_token_created_at).total_seconds() > 86400:
-            raise ValidationError('Verification link has expired')
-
-        # Mark user as verified and clear token
-        user.is_verified = True
-        user.verification_token = None
-        user.verification_token_created_at = None
-        user.save()
-
-        return user
+        except Exception as e:
+            logger.error(f"Verification error: {str(e)}", exc_info=True)
+            raise ValidationError('Verification failed') from e
