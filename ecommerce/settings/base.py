@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
     'rest_framework',
     'knox',
     "corsheaders",
@@ -46,6 +47,8 @@ INSTALLED_APPS = [
     'orders',
     'payments',
 ]
+
+SITE_ID = 1
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -64,7 +67,7 @@ ROOT_URLCONF = 'ecommerce.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],
+        'DIRS': [BASE_DIR / '../templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -182,3 +185,5 @@ MPESA_BASE_URL = config("MPESA_BASE_URL")
 # Frontend URLs (for email templates)
 FRONTEND_VERIFICATION_SUCCESS_URL = 'https://yourapp.com/verification-success/'
 FRONTEND_VERIFICATION_FAILED_URL = 'https://yourapp.com/verification-failed/'
+SITE_NAME = 'Your E-commerce Site'
+REPLY_TO_EMAIL = 'no-reply@yourapp.com'
