@@ -65,7 +65,7 @@ Before you begin, ensure you have the following installed:
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/your-username/alx-project-nexus.git
+   git clone https://github.com/snipher-marube/alx-project-nexus.git
    cd alx-project-nexus
    ```
 
@@ -165,23 +165,23 @@ Access the interactive API documentation:
 
 ```
 alx-project-nexus/
-├── 📁 apps/
-│   ├── 📁 authentication/      # User authentication & authorization
-│   ├── 📁 products/           # Product catalog management
-│   ├── 📁 orders/             # Order processing system
-│   ├── 📁 payments/           # Payment gateway integration
-│   └── 📁 core/               # Shared utilities and models
-├── 📁 config/                 # Django settings and configuration
-├── 📁 static/                 # Static files (CSS, JS, images)
-├── 📁 media/                  # User-uploaded files
-├── 📁 tests/                  # Test suites
+├── 📁 .github/
+│   ├── 📁 workflows/          # CI/CD workflows
+│   ├── 📁 django.yml/         # CI/CD configurations
+├── 📁 ecommerce/              # Django project
+├── 📁 products/               # Products app
+├── 📁 users/                  # User authentication & authorization
+├── 📁 orders/                 # Order processing
+├── 📁 payments/               # Payment integration
 ├── 📁 docs/                   # Project documentation
 ├── 📁 docker/                 # Docker configuration files
 ├── 🐳 docker-compose.yml      # Docker services configuration
 ├── 📋 requirements.txt        # Python dependencies
 ├── 🔧 manage.py              # Django management script
 ├── 🌍 .env.example           # Environment variables template
+├── 📄 .gitignore             # Git ignore file
 └── 📖 README.md              # Project documentation
+
 ```
 
 ## 🧪 Testing
