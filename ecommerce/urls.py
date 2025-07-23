@@ -38,6 +38,8 @@ urlpatterns = [
     path('api/v1/auth/', include('users.urls')),
     path('api/v1/auth/', include('knox.urls')),
     path('api/v1/products/', include('products.urls')),
+    path('api/v1/orders/', include('orders.urls')),
+    path('api/v1/payments/', include('payments.urls')),
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
 ]

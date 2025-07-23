@@ -1,0 +1,240 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Your Order Has Shipped!</title>
+    <style type="text/css">
+        /* Client-specific styles */
+        body, table, td, a { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
+        table, td { mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
+        img { -ms-interpolation-mode: bicubic; border: 0; height: auto; line-height: 100%; outline: none; text-decoration: none; }
+        
+        /* Reset styles */
+        body { margin: 0 !important; padding: 0 !important; width: 100% !important; }
+        
+        /* iOS BLUE LINKS */
+        a[x-apple-data-detectors] {
+            color: inherit !important;
+            text-decoration: none !important;
+            font-size: inherit !important;
+            font-family: inherit !important;
+            font-weight: inherit !important;
+            line-height: inherit !important;
+        }
+        
+        /* Main styles */
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            color: #333333;
+            background-color: #f7f7f7;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            background-color: #ffffff;
+            padding: 30px 20px;
+            text-align: center;
+            border-bottom: 1px solid #eeeeee;
+        }
+        
+        .logo {
+            max-width: 180px;
+            height: auto;
+        }
+        
+        .content {
+            background-color: #ffffff;
+            padding: 30px 20px;
+        }
+        
+        .shipping-notice {
+            background-color: #f0f7ff;
+            border-left: 4px solid #2b6cb0;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .tracking-info {
+            background-color: #f9f9f9;
+            border-radius: 4px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .order-items {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        .order-items th {
+            text-align: left;
+            padding: 10px;
+            background-color: #f2f2f2;
+            border-bottom: 1px solid #dddddd;
+        }
+        
+        .order-items td {
+            padding: 10px;
+            border-bottom: 1px solid #eeeeee;
+            vertical-align: top;
+        }
+        
+        .order-items tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .button {
+            display: inline-block;
+            background-color: #2b6cb0;
+            color: #ffffff !important;
+            text-decoration: none;
+            padding: 12px 24px;
+            border-radius: 4px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        
+        .footer {
+            background-color: #ffffff;
+            padding: 20px;
+            text-align: center;
+            font-size: 12px;
+            color: #999999;
+            border-top: 1px solid #eeeeee;
+        }
+        
+        .social-icons a {
+            display: inline-block;
+            margin: 0 5px;
+        }
+        
+        .social-icons img {
+            width: 24px;
+            height: 24px;
+        }
+        
+        @media screen and (max-width: 600px) {
+            .container {
+                width: 100% !important;
+            }
+            .content, .header, .footer {
+                padding-left: 15px !important;
+                padding-right: 15px !important;
+            }
+            .order-items th, .order-items td {
+                padding: 8px 5px !important;
+            }
+        }
+    </style>
+</head>
+<body style="margin: 0; padding: 0; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #333333; background-color: #f7f7f7;">
+    <!--[if (gte mso 9)|(IE)]>
+    <table width="600" align="center" cellpadding="0" cellspacing="0" border="0">
+      <tr>
+        <td>
+    <![endif]-->
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <img src="https://yourwebsite.com/static/images/logo.png" alt="Company Logo" class="logo" />
+        </div>
+        
+        <!-- Content -->
+        <div class="content">
+            <h1 style="margin-top: 0; color: #2b6cb0;">Your order is on the way!</h1>
+            <p>Hi {{ customer.first_name }},</p>
+            <p>Great news! Your order #{{ order.number }} has shipped and should be arriving soon.</p>
+            
+            <div class="shipping-notice">
+                <h2 style="margin-top: 0; color: #2b6cb0;">🚚 Shipping Update</h2>
+                <p>Your package has been handed over to the carrier and is now in transit.</p>
+            </div>
+            
+            <div class="tracking-info">
+                <h3 style="margin-top: 0;">Tracking Information</h3>
+                <p><strong>Carrier:</strong> {{ shipment.carrier }}</p>
+                <p><strong>Tracking Number:</strong> {{ shipment.tracking_number }}</p>
+                <p><strong>Estimated Delivery:</strong> {{ shipment.estimated_delivery|date:"F j, Y" }}</p>
+                
+                <div style="text-align: center; margin: 20px 0;">
+                    <a href="{{ shipment.tracking_url }}" class="button">Track Your Package</a>
+                </div>
+                
+                <p style="font-size: 13px; color: #666666;">
+                    Please note: It may take 24 hours for tracking information to appear on the carrier's website.
+                </p>
+            </div>
+            
+            <h3>Shipped Items</h3>
+            <table class="order-items">
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>Qty</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in shipment.items.all %}
+                    <tr>
+                        <td>
+                            <strong>{{ item.name }}</strong><br />
+                            {% if item.variant %}
+                                <small>{{ item.variant.name }}</small><br />
+                            {% endif %}
+                            <small>SKU: {{ item.sku }}</small>
+                        </td>
+                        <td>{{ item.quantity }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            
+            <h3>Shipping To</h3>
+            <p>
+                {{ order.shipping_address.first_name }} {{ order.shipping_address.last_name }}<br />
+                {% if order.shipping_address.company %}{{ order.shipping_address.company }}<br />{% endif %}
+                {{ order.shipping_address.address_line_1 }}<br />
+                {% if order.shipping_address.address_line_2 %}{{ order.shipping_address.address_line_2 }}<br />{% endif %}
+                {{ order.shipping_address.city }}, {{ order.shipping_address.state }} {{ order.shipping_address.postal_code }}<br />
+                {{ order.shipping_address.country }}<br />
+                Phone: {{ order.shipping_address.phone }}
+            </p>
+            
+            <h3>Need Help?</h3>
+            <p>If you have any questions about your shipment or need to make changes to your delivery, please contact our <a href="{{ support_url }}">customer support team</a>.</p>
+            
+            <p>Thank you for shopping with us!</p>
+            <p>The {{ company_name }} Team</p>
+        </div>
+        
+        <!-- Footer -->
+        <div class="footer">
+            <div class="social-icons">
+                <a href="{{ facebook_url }}"><img src="https://yourwebsite.com/static/images/facebook.png" alt="Facebook" /></a>
+                <a href="{{ twitter_url }}"><img src="https://yourwebsite.com/static/images/twitter.png" alt="Twitter" /></a>
+                <a href="{{ instagram_url }}"><img src="https://yourwebsite.com/static/images/instagram.png" alt="Instagram" /></a>
+            </div>
+            <p>&copy; {{ current_year }} {{ company_name }}. All rights reserved.</p>
+            <p>
+                <a href="{{ terms_url }}">Terms of Service</a> | 
+                <a href="{{ privacy_url }}">Privacy Policy</a>
+            </p>
+            <p>
+                {{ company_address|linebreaksbr }}
+            </p>
+        </div>
+    </div>
+    <!--[if (gte mso 9)|(IE)]>
+        </td>
+      </tr>
+    </table>
+    <![endif]-->
+</body>
+</html>

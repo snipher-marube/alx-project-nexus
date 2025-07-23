@@ -1,0 +1,267 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Your Order Confirmation</title>
+    <style type="text/css">
+        /* Client-specific styles */
+        body, table, td, a { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
+        table, td { mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
+        img { -ms-interpolation-mode: bicubic; border: 0; height: auto; line-height: 100%; outline: none; text-decoration: none; }
+        
+        /* Reset styles */
+        body { margin: 0 !important; padding: 0 !important; width: 100% !important; }
+        
+        /* iOS BLUE LINKS */
+        a[x-apple-data-detectors] {
+            color: inherit !important;
+            text-decoration: none !important;
+            font-size: inherit !important;
+            font-family: inherit !important;
+            font-weight: inherit !important;
+            line-height: inherit !important;
+        }
+        
+        /* Main styles */
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            color: #333333;
+            background-color: #f7f7f7;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            background-color: #ffffff;
+            padding: 30px 20px;
+            text-align: center;
+            border-bottom: 1px solid #eeeeee;
+        }
+        
+        .logo {
+            max-width: 180px;
+            height: auto;
+        }
+        
+        .content {
+            background-color: #ffffff;
+            padding: 30px 20px;
+        }
+        
+        .order-details {
+            background-color: #f9f9f9;
+            border-radius: 4px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .order-items {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        .order-items th {
+            text-align: left;
+            padding: 10px;
+            background-color: #f2f2f2;
+            border-bottom: 1px solid #dddddd;
+        }
+        
+        .order-items td {
+            padding: 10px;
+            border-bottom: 1px solid #eeeeee;
+            vertical-align: top;
+        }
+        
+        .order-items tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .order-totals {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        .order-totals td {
+            padding: 8px 0;
+            border-bottom: 1px solid #eeeeee;
+        }
+        
+        .order-totals tr:last-child td {
+            border-bottom: none;
+            font-weight: bold;
+        }
+        
+        .button {
+            display: inline-block;
+            background-color: #2b6cb0;
+            color: #ffffff !important;
+            text-decoration: none;
+            padding: 12px 24px;
+            border-radius: 4px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        
+        .footer {
+            background-color: #ffffff;
+            padding: 20px;
+            text-align: center;
+            font-size: 12px;
+            color: #999999;
+            border-top: 1px solid #eeeeee;
+        }
+        
+        .social-icons a {
+            display: inline-block;
+            margin: 0 5px;
+        }
+        
+        .social-icons img {
+            width: 24px;
+            height: 24px;
+        }
+        
+        @media screen and (max-width: 600px) {
+            .container {
+                width: 100% !important;
+            }
+            .content, .header, .footer {
+                padding-left: 15px !important;
+                padding-right: 15px !important;
+            }
+            .order-items th, .order-items td {
+                padding: 8px 5px !important;
+            }
+        }
+    </style>
+</head>
+<body style="margin: 0; padding: 0; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #333333; background-color: #f7f7f7;">
+    <!--[if (gte mso 9)|(IE)]>
+    <table width="600" align="center" cellpadding="0" cellspacing="0" border="0">
+      <tr>
+        <td>
+    <![endif]-->
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <img src="https://yourwebsite.com/static/images/logo.png" alt="Company Logo" class="logo" />
+        </div>
+        
+        <!-- Content -->
+        <div class="content">
+            <h1 style="margin-top: 0; color: #2b6cb0;">Thank you for your order!</h1>
+            <p>Hi {{ customer.first_name }},</p>
+            <p>We've received your order and it's now being processed. Below you'll find all the details of your purchase.</p>
+            
+            <div class="order-details">
+                <h2 style="margin-top: 0;">Order #{{ order.number }}</h2>
+                <p><strong>Order Date:</strong> {{ order.created_at|date:"F j, Y" }}</p>
+                <p><strong>Status:</strong> {{ order.get_status_display }}</p>
+                <p><strong>Payment Method:</strong> {{ order.get_payment_method_display }}</p>
+                <p><strong>Payment Status:</strong> {{ order.get_payment_status_display }}</p>
+            </div>
+            
+            <h3>Order Summary</h3>
+            <table class="order-items">
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>Price</th>
+                        <th>Qty</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in order.items.all %}
+                    <tr>
+                        <td>
+                            <strong>{{ item.name }}</strong><br />
+                            {% if item.variant %}
+                                <small>{{ item.variant.name }}</small><br />
+                            {% endif %}
+                            <small>SKU: {{ item.sku }}</small>
+                        </td>
+                        <td>${{ item.price }}</td>
+                        <td>{{ item.quantity }}</td>
+                        <td>${{ item.total_price }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            
+            <table class="order-totals">
+                <tr>
+                    <td>Subtotal:</td>
+                    <td style="text-align: right;">${{ order.subtotal }}</td>
+                </tr>
+                <tr>
+                    <td>Shipping:</td>
+                    <td style="text-align: right;">${{ order.shipping_cost }}</td>
+                </tr>
+                <tr>
+                    <td>Tax:</td>
+                    <td style="text-align: right;">${{ order.tax }}</td>
+                </tr>
+                <tr>
+                    <td>Discount:</td>
+                    <td style="text-align: right;">- ${{ order.discount }}</td>
+                </tr>
+                <tr>
+                    <td>Total:</td>
+                    <td style="text-align: right;">${{ order.total }}</td>
+                </tr>
+            </table>
+            
+            <h3>Shipping Information</h3>
+            <p>
+                {{ order.shipping_address.first_name }} {{ order.shipping_address.last_name }}<br />
+                {% if order.shipping_address.company %}{{ order.shipping_address.company }}<br />{% endif %}
+                {{ order.shipping_address.address_line_1 }}<br />
+                {% if order.shipping_address.address_line_2 %}{{ order.shipping_address.address_line_2 }}<br />{% endif %}
+                {{ order.shipping_address.city }}, {{ order.shipping_address.state }} {{ order.shipping_address.postal_code }}<br />
+                {{ order.shipping_address.country }}<br />
+                Phone: {{ order.shipping_address.phone }}
+            </p>
+            
+            <div style="text-align: center; margin: 30px 0;">
+                <a href="{{ order_url }}" class="button">View Your Order</a>
+            </div>
+            
+            <p>We'll send you another email when your order ships. If you have any questions about your order, please reply to this email or contact our <a href="{{ support_url }}">customer support team</a>.</p>
+            
+            <p>Thanks again for shopping with us!</p>
+            <p>The {{ company_name }} Team</p>
+        </div>
+        
+        <!-- Footer -->
+        <div class="footer">
+            <div class="social-icons">
+                <a href="{{ facebook_url }}"><img src="https://yourwebsite.com/static/images/facebook.png" alt="Facebook" /></a>
+                <a href="{{ twitter_url }}"><img src="https://yourwebsite.com/static/images/twitter.png" alt="Twitter" /></a>
+                <a href="{{ instagram_url }}"><img src="https://yourwebsite.com/static/images/instagram.png" alt="Instagram" /></a>
+            </div>
+            <p>&copy; {{ current_year }} {{ company_name }}. All rights reserved.</p>
+            <p>
+                <a href="{{ terms_url }}">Terms of Service</a> | 
+                <a href="{{ privacy_url }}">Privacy Policy</a>
+            </p>
+            <p>
+                {{ company_address|linebreaksbr }}
+            </p>
+        </div>
+    </div>
+    <!--[if (gte mso 9)|(IE)]>
+        </td>
+      </tr>
+    </table>
+    <![endif]-->
+</body>
+</html>

@@ -201,7 +201,7 @@ SWAGGER_SETTINGS = {
     'LOGOUT_URL': '/admin/logout/',  # Optional: Django admin logout
 }
 
-# Temporarily disable permissions for docs (development only)
+'''# Temporarily disable permissions for docs (development only)
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 from rest_framework.permissions import AllowAny
@@ -215,3 +215,17 @@ schema_view = get_schema_view(
     public=True,
     permission_classes=[AllowAny],  # 👈 Critical for local access
 )
+'''
+# Order settings
+ORDER_NUMBER_PREFIX = 'ORD'
+DEFAULT_CURRENCY = 'USD'
+ORDER_AUTO_CANCEL_DAYS = 7  # Automatically cancel unpaid orders after 7 days
+
+# Payment gateway settings (example for Stripe)
+STRIPE_PUBLIC_KEY = 'your-stripe-public-key'
+STRIPE_SECRET_KEY = 'your-stripe-secret-key'
+STRIPE_WEBHOOK_SECRET = 'your-stripe-webhook-secret'
+
+# Email notifications
+ORDER_CONFIRMATION_EMAIL_TEMPLATE = 'emails/order_confirmation.html'
+ORDER_SHIPPED_EMAIL_TEMPLATE = 'emails/order_shipped.html'
