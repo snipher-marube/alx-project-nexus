@@ -304,3 +304,41 @@ class ProductListSerializer(serializers.ModelSerializer):
         if primary_image:
             return ProductImageSerializer(primary_image).data
         return None
+    
+class ProductDetailSerializer(serializers.ModelSerializer):
+    category = CategorySerializer(read_only=True)
+    brand = BrandSerializer(read_only=True)
+    images = ProductImageSerializer(many=True, read_only=True)
+    variants = ProductVariantSerializer(many=True, read_only=True)
+    specifications = ProductSpecificationSerializer(many=True, read_only=True)
+    reviews = ProductReviewSerializer(many=True, read_only=True)
+    primary_image = serializers.SerializerMethodField()
+    discount_percentage = serializers.DecimalField(
+        max_digits=5,
+        decimal_places=2,
+        read_only=True
+    )
+    average_rating = serializers.SerializerMethodField()
+    inventory_status = serializers.CharField(read_only=True)
+    is_in_stock = serializers.BooleanField(read_only=True)
+
+    class Meta:
+        model = Product
+        fields = [
+            'id', 'name', 'slug', 'description', 'category', 'brand',
+            'status', 'price', 'compare_at_price', 'discount_percentage',
+            'cost_per_item', 'sku', 'barcode', 'quantity', 'track_quantity',
+            'inventory_status', 'is_in_stock', 'continue_selling_when_out_of_stock',
+            'weight', 'is_featured', 'is_digital', 'requires_shipping',
+            'primary_image', 'images', 'variants', 'specifications', 'reviews',
+            'average_rating', 'published_at', 'created_at', 'updated_at'
+        ]
+
+    def get_primary_image(self, obj):
+        primary_image = obj.images.filter(is_primary=True).first()
+        if primary_image:
+            return ProductImageSerializer(primary_image).data
+        return None
+
+    def get_average_rating(self, obj):
+        return obj.average_rating  # This uses the property from the model
