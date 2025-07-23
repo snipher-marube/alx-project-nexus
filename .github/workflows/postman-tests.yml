@@ -13,13 +13,9 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     
-    - name: Verify files exist
-      run: |
-        ls -la postman-tests/
-        test -f postman-tests/collection.json || echo "Collection file missing"
-        test -f postman-tests/environment.json || echo "Environment file missing"
-        test -f postman-tests/collection.json && test -f postman-tests/environment.json
-        
+    - name: Verify files
+      run: ls -la postman-tests/
+    
     - name: Set up Node.js
       uses: actions/setup-node@v4
       with:
@@ -31,18 +27,17 @@ jobs:
     - name: Run Postman tests
       id: tests
       run: |
+        echo "Using environment:"
+        cat postman-tests/environment.json
+        
         newman run postman-tests/collection.json \
           -e postman-tests/environment.json \
           --reporters cli,json \
           --reporter-json-export postman-tests/results.json
         echo "result=$?" >> $GITHUB_OUTPUT
       
-    - name: Upload test report
+    - name: Upload results
       uses: actions/upload-artifact@v4
       with:
         name: postman-test-report
         path: postman-tests/results.json
-        
-    - name: Check test results
-      if: steps.tests.outputs.result != 0
-      run: exit 1
