@@ -1,4 +1,5 @@
 import React from "react";
+import SearchBar from "../common/SearchBar";
 
 interface HeaderProps {
   onShowLogin: () => void;
@@ -27,6 +28,9 @@ const Header: React.FC<HeaderProps> = ({ onShowLogin, onShowSignup }) => {
           </li>
           <li>
             <a href="/profile" className="text-white hover:text-red-400">Profile</a>
+          </li>
+          <li className="">
+            <SearchBar onSearch={(query) => console.log(`Searching for: ${query}`)} />
           </li>
         </ul>
       </nav>
