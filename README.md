@@ -152,6 +152,7 @@ graph TB
 
 | Category | Technology | Purpose |
 |----------|-----------|---------|
+| **Frontend Framework** | React js Framework | User ui development |
 | **Backend Framework** | Django REST Framework 3.14+ | API development and serialization |
 | **Language** | Python 3.9+ | Core programming language |
 | **Database** | PostgreSQL 14+ | Primary data storage |
