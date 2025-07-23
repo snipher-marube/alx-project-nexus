@@ -57,7 +57,7 @@
 ### 🌟 Key Highlights
 - **Enterprise-grade architecture** with clean code principles
 - **Comprehensive API coverage** for all e-commerce operations
-- **Advanced security features** including JWT authentication
+- **Advanced security features** including knox authentication
 - **High-performance** database optimization and caching
 - **Extensive testing suite** with 95%+ code coverage
 - **Production-ready** with Docker containerization
@@ -65,7 +65,7 @@
 ## ✨ Features
 
 ### 🔐 Authentication & Authorization
-- **JWT-based authentication** with secure token management
+- **Knox-based authentication** with secure token management
 - **Role-based access control** (Admin, Customer, Staff)
 - **Multi-factor authentication** support
 - **Password reset** and email verification
@@ -158,7 +158,7 @@ graph TB
 | **Database** | PostgreSQL 14+ | Primary data storage |
 | **Caching** | Redis 6+ | Session storage and caching |
 | **Search Engine** | Elasticsearch 8+ | Advanced search capabilities |
-| **Authentication** | JWT (Simple JWT) | Stateless authentication |
+| **Authentication** | Knox (Django REST Knox) | Stateful authentication |
 | **Containerization** | Docker & Docker Compose | Application containerization |
 | **CI/CD** | GitHub Actions | Automated testing and deployment |
 | **API Documentation** | Swagger/OpenAPI, Redoc | Interactive API documentation |
@@ -270,13 +270,6 @@ DB_PORT=5432
 REDIS_URL=redis://localhost:6379/0
 CELERY_BROKER_URL=redis://localhost:6379/1
 CELERY_RESULT_BACKEND=redis://localhost:6379/2
-
-# =============================================================================
-# JWT CONFIGURATION
-# =============================================================================
-JWT_SECRET_KEY=your_jwt_secret_key_different_from_django_secret
-JWT_ACCESS_TOKEN_LIFETIME=3600  # 1 hour
-JWT_REFRESH_TOKEN_LIFETIME=86400  # 24 hours
 
 # =============================================================================
 # EMAIL CONFIGURATION
@@ -391,7 +384,7 @@ ALX Project Nexus provides comprehensive API documentation with interactive test
 | `/api/v1/auth/register/` | POST | User registration | ❌ |
 | `/api/v1/auth/login/` | POST | User login | ❌ |
 | `/api/v1/auth/logout/` | POST | User logout | ✅ |
-| `/api/v1/auth/refresh/` | POST | Refresh JWT token | ❌ |
+| `/api/v1/auth/refresh/` | POST | Refresh Knox token | ❌ |
 | `/api/v1/auth/password/reset/` | POST | Password reset request | ❌ |
 | `/api/v1/auth/password/confirm/` | POST | Confirm password reset | ❌ |
 
@@ -440,7 +433,7 @@ curl -X POST http://localhost:8000/api/v1/auth/register/ \
 ```bash
 curl -X POST http://localhost:8000/api/v1/products/ \
   -H "Content-Type: application/json" \
-  -H "Authorization: Bearer YOUR_JWT_TOKEN" \
+  -H "Authorization: Bearer YOUR_KNOX_TOKEN" \
   -d '{
     "name": "Premium Laptop",
     "description": "High-performance laptop for professionals",
@@ -455,7 +448,7 @@ curl -X POST http://localhost:8000/api/v1/products/ \
 ```bash
 curl -X POST http://localhost:8000/api/v1/orders/ \
   -H "Content-Type: application/json" \
-  -H "Authorization: Bearer YOUR_JWT_TOKEN" \
+  -H "Authorization: Bearer YOUR_KNOX_TOKEN" \
   -d '{
     "items": [
       {
@@ -961,7 +954,7 @@ This project follows industry best practices and standards:
 - ✅ **SOLID Principles**: Maintainable and extensible code
 
 ### 🔒 Security
-- ✅ **JWT Authentication**: Secure stateless authentication
+- ✅ **Knox Authentication**: Secure stateful authentication
 - ✅ **Input Validation**: Comprehensive request validation
 - ✅ **SQL Injection Prevention**: ORM-based database queries
 - ✅ **CORS Configuration**: Proper cross-origin resource sharing
