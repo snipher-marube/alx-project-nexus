@@ -25,7 +25,9 @@ jobs:
       run: npm install -g newman newman-reporter-html
       
     - name: Run Postman tests
+
       run: npm run test:api 
+
       continue-on-error: true
       
     - name: Upload test report
