@@ -13,6 +13,13 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     
+    - name: Verify files exist
+      run: |
+        ls -la postman-tests/
+        test -f postman-tests/collection.json || echo "Collection file missing"
+        test -f postman-tests/environment.json || echo "Environment file missing"
+        test -f postman-tests/collection.json && test -f postman-tests/environment.json
+        
     - name: Set up Node.js
       uses: actions/setup-node@v4
       with:
