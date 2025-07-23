@@ -1,0 +1,573 @@
+{
+	"info": {
+		"_postman_id": "7acf64e1-b976-4961-8b77-cb1475eb5b64",
+		"name": "AlX Backend Pro",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "17379090"
+	},
+	"item": [
+		{
+			"name": "register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "marubesnipher8431@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "snipher8431",
+							"type": "text"
+						},
+						{
+							"key": "first_name",
+							"value": "kakas",
+							"type": "text"
+						},
+						{
+							"key": "last_name ",
+							"value": "james",
+							"type": "text"
+						},
+						{
+							"key": "password2",
+							"value": "snipher8431",
+							"type": "text"
+						},
+						{
+							"key": "user_type",
+							"value": "CUSTOMER",
+							"type": "text"
+						},
+						{
+							"key": "phone",
+							"value": "+254796709140",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{baseURL}}/api/v1/auth/register/",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"auth",
+						"register",
+						""
+					],
+					"query": [
+						{
+							"key": "",
+							"value": null,
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Token 87cc3eacf1baa2773aa5131c7e31040b038249a4e3498ac3da57e2c9f73b7be6",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "marubesnipher8431@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "snipher8431",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{baseURL}}/api/v1/auth/login/",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"auth",
+						"login",
+						""
+					],
+					"query": [
+						{
+							"key": "email",
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "logout",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Token 21d41d778a2e2b598b7f53dece6c859454987d5c53fa3191ae9b10a16ffc206a",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "marubesnipher8431@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "snipher8431",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{baseURL}}/api/v1/auth/logout/",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"auth",
+						"logout",
+						""
+					],
+					"query": [
+						{
+							"key": "email",
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "logout all",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Token b93d54dd9d1dfff93c130384d4645c3d84e74742c0688fabe544382bf08969b9",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "marubesnipher8431@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "snipher8431",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{baseURL}}/api/v1/auth/logout-all/",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"auth",
+						"logout-all",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "profile",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Token 29ba0f2782a34ed13d9125624c0f0df509195ba91a16643d56ec8882af62e420",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "marubesnipher8431@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "snipher8431",
+							"type": "text"
+						},
+						{
+							"key": "bio",
+							"value": "software engineer",
+							"type": "text"
+						},
+						{
+							"key": "address",
+							"value": "south b",
+							"type": "text"
+						},
+						{
+							"key": "city",
+							"value": "Nairobi",
+							"type": "text"
+						},
+						{
+							"key": "country",
+							"value": "Kenya",
+							"type": "text"
+						},
+						{
+							"key": "postal_code",
+							"value": "00100",
+							"type": "text"
+						},
+						{
+							"key": "state",
+							"value": "Nairobi",
+							"type": "text"
+						},
+						{
+							"key": "website",
+							"value": "https://www.blwi.org/en/",
+							"type": "text"
+						},
+						{
+							"key": "gender",
+							"value": "M",
+							"type": "text"
+						},
+						{
+							"key": "date_of_birth",
+							"value": "1998-08-20",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{baseURL}}/api/v1/auth/profile/",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"auth",
+						"profile",
+						""
+					],
+					"query": [
+						{
+							"key": "email",
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "me",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Token 29ba0f2782a34ed13d9125624c0f0df509195ba91a16643d56ec8882af62e420",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "marubesnipher8431@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "snipher8431",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{baseURL}}/api/v1/auth/me/",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"auth",
+						"me",
+						""
+					],
+					"query": [
+						{
+							"key": "email",
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "products",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Token 29ba0f2782a34ed13d9125624c0f0df509195ba91a16643d56ec8882af62e420",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "marubesnipher8431@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "snipher8431",
+							"type": "text"
+						},
+						{
+							"key": "bio",
+							"value": "software engineer",
+							"type": "text"
+						},
+						{
+							"key": "address",
+							"value": "south b",
+							"type": "text"
+						},
+						{
+							"key": "city",
+							"value": "Nairobi",
+							"type": "text"
+						},
+						{
+							"key": "country",
+							"value": "Kenya",
+							"type": "text"
+						},
+						{
+							"key": "postal_code",
+							"value": "00100",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{baseURL}}/api/v1/products/",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"products",
+						""
+					],
+					"query": [
+						{
+							"key": "email",
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "categories",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "brands",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/api/v1/brands/",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"brands",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "product detail",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "add rating",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Token f361ba258c8ee4534caa68a096d926cdaa471bc1556ac98e4b3e0274bb85d3d9",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "rating",
+							"value": "4",
+							"type": "text"
+						},
+						{
+							"key": "title",
+							"value": "invalid product",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{baseURL}}/api/v1/products/timberland-shoes/add-review/",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"products",
+						"timberland-shoes",
+						"add-review",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "reviews",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Token f361ba258c8ee4534caa68a096d926cdaa471bc1556ac98e4b3e0274bb85d3d9",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "rating",
+							"value": "4",
+							"type": "text"
+						},
+						{
+							"key": "title",
+							"value": "invalid product",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{baseURL}}/api/v1/products/timberland-shoes/reviews/",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"products",
+						"timberland-shoes",
+						"reviews",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "baseURL",
+			"value": "http://127.0.0.1:8000",
+			"type": "default"
+		}
+	]
+}
