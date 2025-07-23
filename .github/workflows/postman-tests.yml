@@ -24,8 +24,8 @@ jobs:
     - name: Run Postman tests
       id: tests
       run: |
-        newman run postman-tests/YourCollection.json \
-          -e postman-tests/AlX Backend Pro.postman_collection.json \
+        newman run postman-tests/collection.json \
+          -e postman-tests/environment.json \
           --reporters cli,json \
           --reporter-json-export postman-tests/results.json
         echo "result=$?" >> $GITHUB_OUTPUT
