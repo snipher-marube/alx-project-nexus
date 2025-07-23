@@ -284,6 +284,7 @@ class ProductListSerializer(serializers.ModelSerializer):
         read_only=True
     )
     average_rating = serializers.DecimalField(
+        source='calculated_avg_rating',
         max_digits=3,
         decimal_places=2,
         read_only=True

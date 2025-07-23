@@ -147,7 +147,7 @@ REST_FRAMEWORK = {
         'burst': '30/minute',
         'sustained': '100/hour'
     },
-    'EXCEPTION_HANDLER': 'core.exceptions.custom_exception_handler',
+    'EXCEPTION_HANDLER': 'rest_framework.views.exception_handler',
 }
 
 # Knox settings

@@ -97,7 +97,7 @@ class ProductViewSet(viewsets.ModelViewSet):
         Prefetch('specifications', queryset=ProductSpecification.objects.order_by('order')),
         Prefetch('reviews', queryset=ProductReview.objects.filter(is_approved=True))
     ).annotate(
-        average_rating=Avg('reviews__rating')
+        calculated_avg_rating=Avg('reviews__rating')
     )
     serializer_class = ProductSerializer
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
