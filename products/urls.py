@@ -14,6 +14,16 @@ router.register(r'product-variant-attributes', views.ProductVariantAttributeView
 router.register(r'product-reviews', views.ProductReviewViewSet, basename='product-review')
 router.register(r'product-specifications', views.ProductSpecificationViewSet, basename='product-specification')
 
+
 urlpatterns = [
     path('', include(router.urls)),
+    path('products/<slug:slug>/reviews/', 
+         views.ProductViewSet.as_view({'get': 'reviews'}), 
+         name='product-reviews'),
+    path('products/<slug:slug>/add-review/', 
+         views.ProductViewSet.as_view({'post': 'add_review'}), 
+         name='add-review'),
+    path('products/<slug:slug>/add-image/', 
+         views.ProductViewSet.as_view({'post': 'add_image'}), 
+         name='add-image'),
 ]

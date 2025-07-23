@@ -19,7 +19,7 @@ from .serializers import (
     ProductImageSerializer, ProductVariantSerializer,
     ProductAttributeSerializer, ProductAttributeValueSerializer,
     ProductVariantAttributeSerializer, ProductReviewSerializer,
-    ProductSpecificationSerializer
+    ProductSpecificationSerializer, ProductDetailSerializer
 )
 from .filters import ProductFilter, CategoryFilter, ProductVariantFilter
 from .pagination import OptimizedPagination
@@ -122,6 +122,8 @@ class ProductViewSet(viewsets.ModelViewSet):
     def get_serializer_class(self):
         if self.action == 'list':
             return ProductListSerializer
+        elif self.action == 'retrieve':
+            return ProductDetailSerializer
         return super().get_serializer_class()
 
     def get_queryset(self):
