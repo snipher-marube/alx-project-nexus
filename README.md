@@ -314,6 +314,9 @@ ENABLE_SILK_PROFILING=True
 
 5. **Database setup**
    ```bash
+   # static files collection
+    python manage.py collectstatic --noinput
+    
    # Create database migrations
    python manage.py makemigrations
    
