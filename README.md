@@ -7,6 +7,7 @@
 [![Python](https://img.shields.io/badge/python-3.9+-blue.svg)](https://python.org)
 [![Django](https://img.shields.io/badge/django-4.0+-green.svg)](https://djangoproject.com)
 [![Docker](https://img.shields.io/badge/docker-ready-blue.svg)](https://docker.com)
+![Postman Tests](https://github.com/snipher-marube/alx-project-nexus/workflows/Postman%20API%20Tests/badge.svg)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)](https://github.com/snipher-marube/alx-project-nexus/actions)
 [![Coverage](https://img.shields.io/badge/coverage-95%25-brightgreen.svg)](https://codecov.io)
