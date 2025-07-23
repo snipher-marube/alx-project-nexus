@@ -33,3 +33,19 @@ SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 
 DOMAIN = ""
+
+# CORS Configuration
+CORS_ALLOWED_ORIGINS = [
+    "https://your-production-domain.com",  # Your production frontend
+]
+
+# Only allow specific HTTP methods
+CORS_ALLOW_METHODS = [
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+]
+

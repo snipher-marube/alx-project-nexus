@@ -31,3 +31,12 @@ TEST = {
     'NAME': config('TEST_DATABASE_NAME'),  # Use an existing database
     'CHARSET': 'UTF8',
 }
+
+# CORS Configuration
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",  # Your frontend development server
+]
+
+
+# For development only - allows all origins (DON'T USE IN PRODUCTION)
+CORS_ALLOW_ALL_ORIGINS = True
