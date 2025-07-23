@@ -1,4 +1,3 @@
-Here's the comprehensive API documentation in wiki format for your authentication system:
 
 # Authentication API Documentation
 
