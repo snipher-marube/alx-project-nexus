@@ -393,10 +393,10 @@ ALX Project Nexus provides comprehensive API documentation with interactive test
 | Endpoint | Method | Description | Auth Required |
 |----------|--------|-------------|---------------|
 | `/api/v1/products/` | GET, POST | List/Create products | GET: ❌, POST: ✅ |
-| `/api/v1/products/{id}/` | GET, PUT, DELETE | Product details/update/delete | GET: ❌, Others: ✅ |
+| `/api/v1/products/{slug}/` | GET, PUT, DELETE | Product details/update/delete | GET: ❌, Others: ✅ |
 | `/api/v1/products/categories/` | GET, POST | Product categories | GET: ❌, POST: ✅ |
 | `/api/v1/products/search/` | GET | Advanced product search | ❌ |
-| `/api/v1/products/{id}/reviews/` | GET, POST | Product reviews | GET: ❌, POST: ✅ |
+| `/api/v1/products/{slug}/reviews/` | GET, POST | Product reviews | GET: ❌, POST: ✅ |
 
 #### Order Management
 | Endpoint | Method | Description | Auth Required |
