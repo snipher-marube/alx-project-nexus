@@ -34,12 +34,13 @@ SECURE_REFERRER_POLICY = "strict-origin-when-cross-origin"
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 
-DOMAIN = ""
+DOMAIN = "https://alx-project-nexus-psi.vercel.app"
+CSRF_TRUSTED_ORIGINS = ['https://alx-project-nexus-psi.vercel.app']
 
-# CORS Configuration
+'''# CORS Configuration
 CORS_ALLOWED_ORIGINS = [
     "https://your-production-domain.com",  # Your production frontend
-]
+]'''
 
 # Only allow specific HTTP methods
 CORS_ALLOW_METHODS = [
