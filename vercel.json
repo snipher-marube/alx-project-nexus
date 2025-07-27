@@ -1,23 +1,26 @@
 {
+  "version": 2,
   "builds": [
     {
       "src": "ecommerce/wsgi.py",
       "use": "@vercel/python",
-      "config": {
+      "config": { 
         "maxLambdaSize": "15mb",
-        "runtime": "python3.12",
-        "buildCommand": "bash setup.sh"
+        "runtime": "python3.11"
       }
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "/ecommerce/wsgi.py"
-    },
-    {
-      "src": "/static/(.*)",
-      "dest": "/static/$1"
+      "dest": "ecommerce/wsgi.py"
     }
-  ]
+  ],
+  "build": {
+    "env": {
+      "DJANGO_SETTINGS_MODULE": "ecommerce.settings.production",
+      "PYTHONPATH": "/var/task",
+      "DISABLE_COLLECTSTATIC": "1"
+    }
+  }
 }
