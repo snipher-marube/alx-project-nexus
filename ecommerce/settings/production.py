@@ -47,6 +47,7 @@ CORS_ALLOWED_ORIGINS = [
 
 
 
+
 # Only allow specific HTTP methods
 CORS_ALLOW_METHODS = [
     'DELETE',
