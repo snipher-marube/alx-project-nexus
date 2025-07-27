@@ -1,40 +1,77 @@
-import React from "react";
-import SearchBar from "../common/SearchBar";
+import React, { useState } from "react";
+import Link from "next/link";
+import { useCart } from "@/context/CartContext";
 
 interface HeaderProps {
   onShowLogin: () => void;
   onShowSignup: () => void;
 }
+
 const Header: React.FC<HeaderProps> = ({ onShowLogin, onShowSignup }) => {
+  const [showAccountMenu, setShowAccountMenu] = useState(false);
+  const { cartItems } = useCart();
+
+  const toggleAccountMenu = () => {
+    setShowAccountMenu((prev) => !prev);
+  };
+
   return (
-    <header className="bg-gray-800 p-4 shadow-md  ">
+    <header className="bg-gray-800 p-4 shadow-md relative">
       <h1 className="text-red-300 text-4xl text-center">E-Commerce App</h1>
-      <div className="absolute start-0 top-0 size-140">
-        <button className=" ml-4 bg-blue-600 text-white p-2 rounded hover:bg-red-700" onClick={onShowLogin}>
-          Login</button>
-        <button className=" ml-2 bg-green-600 text-white p-2 rounded hover:bg-red-700" onClick={onShowSignup}>
-          Sign Up  </button>`
-      </div>
-      <nav className="mt-4 justify-items-center m1-4 p1-3 text-2xl">
-        <ul className="flex space-x-5">
+
+      <nav className="mt-4 flex justify-center">
+        <ul className="flex space-x-6 text-2xl items-center relative">
           <li>
-            <a href="/frontend/my-app/pages/index.tsx" className="text-gray-50  hover:text-red-400">Home</a>
+            <Link href="/" className="text-gray-50 hover:text-red-400">
+              Home
+            </Link>
           </li>
           <li>
-            <a href="/products" className="text-white hover:text-red-400">Products</a>
+            <Link href="/products" className="text-white hover:text-red-400">
+              Products
+            </Link>
           </li>
           <li>
-            <a href="/cart" className="text-white hover:text-red-400">Cart</a>
+            <Link href="/Cart" className="text-white hover:text-red-400">
+              Cart
+
+            </Link>
           </li>
-          <li>
-            <a href="/profile" className="text-white hover:text-red-400">Profile</a>
+          
+          <li className="relative">
+            <button 
+              className="text-white hover:text-red-400 focus:outline-none"
+              onClick={toggleAccountMenu}
+              aria-expanded={showAccountMenu}
+            >
+              Account {'↓'}
+            </button>
+            {showAccountMenu && (
+              <div className="absolute right-0 mt-2 w-40 justify-items-center text-black bg-white border rounded shadow z-10">
+                <button
+                  className="justify-text-center block w-full text-left px-4 py-2 text-sm hover:bg-gray-100"
+                  onClick={onShowLogin}
+                >
+                    Login
+                </button>
+                <button
+                  className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100"
+                  onClick={onShowSignup}
+                >
+                  Sign Up
+                </button>
+                <li>
+            <Link href="/orders" className="text-black text-sm">
+                Orders
+            </Link>
           </li>
-          <li className="">
-            <SearchBar onSearch={(query) => console.log(`Searching for: ${query}`)} />
+              </div>
+            )}
           </li>
         </ul>
       </nav>
     </header>
   );
-}
+};
+
 export default Header;

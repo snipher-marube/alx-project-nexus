@@ -8,7 +8,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const [showLogin, setShowLogin] = useState(false);
   const [showSignup, setShowSignup] = useState(false);
 
-  // Functions to open modals, passed down to Header
+
   const openLogin = () => {
     setShowLogin(true);
     setShowSignup(false);
