@@ -1,47 +1,15 @@
+/* eslint-disable @next/next/no-img-element */
 import React, { useState } from "react";
 import Link from "next/link";
 import SearchBar from "../components/common/SearchBar";
 import { useCart } from "@/context/CartContext";
-
+import { allProducts as dummyProducts } from "../data/Categories";
 interface Product {
   id: string;
   title: string;
   image: string;
   price: string;
 }
-
-const dummyProducts: Product[] = [
-  {
-    id: "1",
-    title: "Wireless Headphones",
-    image: "https://via.placeholder.com/200",
-    price: "$59.99",
-  },
-  {
-    id: "2",
-    title: "Smartphone",
-    image: "https://via.placeholder.com/200",
-    price: "$299.99",
-  },
-  {
-    id: "3",
-    title: "Sneakers",
-    image: "https://via.placeholder.com/200",
-    price: "$79.99",
-  },
-  {
-    id: "4",
-    title: "Bluetooth Speaker",
-    image: "https://via.placeholder.com/200",
-    price: "$45.00",
-  },
-  {
-    id: "5",
-    title: "Wrist Watch",
-    image: "https://via.placeholder.com/200",
-    price: "$120.00",
-  },
-];
 
 export default function ProductsPage() {
   const [products, setProducts] = useState(dummyProducts);
