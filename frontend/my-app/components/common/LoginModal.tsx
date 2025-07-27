@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 
 interface LoginModalProps {
   onClose: () => void;
@@ -17,22 +18,18 @@ export default function LoginModal({ onClose, onSwitch }: LoginModalProps) {
     setLoading(true);
 
     try {
-      const res = await fetch('/api/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
+      const res = await axios.post('https://alx-project-nexus-psi.vercel.app/auth/login', {
+        email,
+        password
       });
 
-      const data = await res.json();
+      // You might want to store token or user info from res.data
+      console.log("Login success:", res.data);
 
-      if (!res.ok) {
-        throw new Error(data.message || 'Login failed');
-      }
-
-
-      onClose();
+      onClose(); // close modal on success
     } catch (err: any) {
-      setError(err.message);
+      const message = err.response?.data?.message || 'Login failed';
+      setError(message);
     } finally {
       setLoading(false);
     }
@@ -42,7 +39,7 @@ export default function LoginModal({ onClose, onSwitch }: LoginModalProps) {
     <div className="fixed inset-0 bg-transparent flex justify-center items-center z-50 text-black">
       <div className="relative bg-white rounded-lg shadow-lg w-full max-w-md p-6">
         <h2 className="text-2xl font-bold mb-4 text-center">Login</h2>
-        
+
         <form onSubmit={handleSubmit}>
           <input
             type="email"
@@ -66,7 +63,7 @@ export default function LoginModal({ onClose, onSwitch }: LoginModalProps) {
           <button
             type="submit"
             disabled={loading}
-            className={`w-full p-2 rounded ${loading ? 'bg-gray-400' : 'bg-blue-600 hover:bg-blue-700'} text-black`}
+            className={`w-full p-2 rounded ${loading ? 'bg-gray-400' : 'bg-blue-600 hover:bg-blue-700'} text-white`}
           >
             {loading ? 'Logging in...' : 'Login'}
           </button>

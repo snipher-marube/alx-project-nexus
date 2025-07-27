@@ -19,8 +19,14 @@ export default function SignupModal({ onClose, onSwitch }: SignupModalProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    // Basic client-side validation
+    if (!firstName || !lastName || !email || !phone || !password || !confirmPassword) {
+      setError('All fields are required.');
+      return;
+    }
+
     if (password !== confirmPassword) {
-      setError('Passwords do not match');
+      setError('Passwords do not match.');
       return;
     }
 
@@ -28,28 +34,36 @@ export default function SignupModal({ onClose, onSwitch }: SignupModalProps) {
     setError('');
 
     try {
-      const res = await fetch('/api/signup', {
+      const res = await fetch('https://alx-project-nexus-psi.vercel.app/auth/register/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          firstName,
-          lastName,
           email,
+          first_name: firstName,
+          last_name: lastName,
           phone,
+          user_type: 'CUSTOMER',
           password,
+          password2: confirmPassword,
         }),
       });
 
       const data = await res.json();
 
       if (!res.ok) {
-        throw new Error(data.message || 'Something went wrong');
+        // Backend returns detailed errors; combine them if available
+        if (data && typeof data === 'object') {
+          const errors = Object.values(data).flat().join(' ');
+          throw new Error(errors || 'Registration failed.');
+        } else {
+          throw new Error('Registration failed.');
+        }
       }
 
-
-      onClose();
+      // Success: user added to database
+      onClose(); // close modal or redirect to login
     } catch (err: any) {
-      setError(err.message);
+      setError(err.message || 'Something went wrong.');
     } finally {
       setLoading(false);
     }
@@ -63,7 +77,7 @@ export default function SignupModal({ onClose, onSwitch }: SignupModalProps) {
         <form onSubmit={handleSubmit} className="text-black">
           <input
             type="text"
-            placeholder="First-Name"
+            placeholder="First Name"
             className="w-full p-2 mb-4 border rounded"
             value={firstName}
             onChange={(e) => setFirstName(e.target.value)}
@@ -71,7 +85,7 @@ export default function SignupModal({ onClose, onSwitch }: SignupModalProps) {
           />
           <input
             type="text"
-            placeholder="Last-Name"
+            placeholder="Last Name"
             className="w-full p-2 mb-4 border rounded"
             value={lastName}
             onChange={(e) => setLastName(e.target.value)}
@@ -86,8 +100,8 @@ export default function SignupModal({ onClose, onSwitch }: SignupModalProps) {
             required
           />
           <input
-            type="number"
-            placeholder="Phone number"
+            type="tel"
+            placeholder="Phone Number"
             className="w-full p-2 mb-4 border rounded"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
