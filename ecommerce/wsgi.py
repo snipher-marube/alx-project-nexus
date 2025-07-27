@@ -17,6 +17,6 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ecommerce.settings')
 application = get_wsgi_application()
 
 # wrap the application with WhiteNoise
-application = WhiteNoise(application, root='static')
+application = WhiteNoise(application, root='staticfiles')
 
 app = application
