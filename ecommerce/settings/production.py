@@ -43,6 +43,7 @@ CORS_ALLOWED_ORIGINS = [
     'https://alx-project-nexus-psi.vercel.app',
 ]
 
+
 # Only allow specific HTTP methods
 CORS_ALLOW_METHODS = [
     'DELETE',
