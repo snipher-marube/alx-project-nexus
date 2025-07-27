@@ -1,8 +1,5 @@
 {
-<<<<<<< HEAD
-=======
   "version": 2,
->>>>>>> 54dd383ec0051441f77a75a579fb238536be41b7
   "builds": [
     {
       "src": "ecommerce/wsgi.py",
@@ -12,45 +9,24 @@
         "runtime": "python3.12",
         "buildCommand": "bash setup.sh"
       }
-<<<<<<< HEAD
-=======
     },
     {
       "src": "staticfiles/**",
       "use": "@vercel/static"
->>>>>>> 54dd383ec0051441f77a75a579fb238536be41b7
     }
   ],
   "routes": [
     {
-<<<<<<< HEAD
-      "src": "/(.*)",
-      "dest": "/ecommerce/wsgi.py"
-    },
-    {
       "src": "/static/(.*)",
       "dest": "/static/$1"
+    },
+    {
+      "src": "/swagger/static/(.*)",
+      "dest": "/static/drf-yasg/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/ecommerce/wsgi.py"
     }
   ]
 }
-=======
-      "src": "/static/(.*)",
-      "dest": "/static/$1",
-      "headers": {
-        "Cache-Control": "public, max-age=31536000, immutable"
-      }
-    },
-    {
-      "src": "/(.*)",
-      "dest": "ecommerce/wsgi.py"
-    }
-  ],
-  "build": {
-    "env": {
-      "DJANGO_SETTINGS_MODULE": "ecommerce.settings.production",
-      "PYTHONPATH": "/var/task:$PYTHONPATH"
-    }
-  }
-}
-
->>>>>>> 54dd383ec0051441f77a75a579fb238536be41b7
