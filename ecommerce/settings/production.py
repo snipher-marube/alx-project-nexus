@@ -47,11 +47,15 @@ CORS_ALLOW_METHODS = [
     'PUT',
 ]
 
-# Static files settings
-STATICFILES_DIRS = [BASE_DIR / 'static']
+# Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATIC_ROOT = BASE_DIR / '../staticfiles'
+STATICFILES_DIRS = [BASE_DIR / '../static']
+
+# For WhiteNoise
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+WHITENOISE_USE_FINDERS = True
+WHITENOISE_MANIFEST_STRICT = False
 
 # For admin static files
 WHITENOISE_USE_FINDERS = True

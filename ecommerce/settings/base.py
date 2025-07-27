@@ -195,10 +195,13 @@ SWAGGER_SETTINGS = {
         }
     },
     'USE_SESSION_AUTH': False,
-    'DEFAULT_AUTO_SCHEMA_CLASS': 'drf_yasg.inspectors.SwaggerAutoSchema',
-    'DEFAULT_GENERATOR_CLASS': 'drf_yasg.generators.OpenAPISchemaGenerator',
-    'LOGIN_URL': '/admin/login/',  # Optional: Django admin login
-    'LOGOUT_URL': '/admin/logout/',  # Optional: Django admin logout
+    'PERSIST_AUTH': True,
+    'REFETCH_SCHEMA_WITH_AUTH': True,
+    'DEEP_LINKING': True,
+    'SHOW_REQUEST_HEADERS': True,
+    'VALIDATOR_URL': None,  # Disable the validator
+    'DEFAULT_MODEL_RENDERING': 'model',
+    'DEFAULT_MODEL_EXPAND_DEPTH': 2,
 }
 
 
