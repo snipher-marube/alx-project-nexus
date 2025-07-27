@@ -1,5 +1,6 @@
 {
   "version": 2,
+
   "builds": [
     {
       "src": "ecommerce/wsgi.py",
@@ -13,26 +14,19 @@
     {
       "src": "staticfiles/**",
       "use": "@vercel/static"
+
     }
   ],
   "routes": [
     {
-      "src": "/static/(.*)",
-      "dest": "/static/$1"
-    },
-    {
-      "src": "/swagger/static/(.*)",
-      "dest": "/static/drf-yasg/$1"
-    },
-    {
+
       "src": "/(.*)",
       "dest": "/ecommerce/wsgi.py"
+    },
+    {
+      "src": "/static/(.*)",
+      "dest": "/static/$1"
     }
-  ],
-  "build": {
-    "env": {
-      "DJANGO_SETTINGS_MODULE": "ecommerce.settings.production",
-      "PYTHONPATH": "/var/task:$PYTHONPATH"
-    }
-  }
+  ]
 }
+
