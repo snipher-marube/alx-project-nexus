@@ -18,20 +18,15 @@
   "routes": [
     {
       "src": "/static/(.*)",
-      "dest": "/static/$1",
-      "headers": {
-        "Cache-Control": "public, max-age=31536000, immutable"
-      }
+      "dest": "/static/$1"
+    },
+    {
+      "src": "/swagger/static/(.*)",
+      "dest": "/static/drf-yasg/$1"
     },
     {
       "src": "/(.*)",
-      "dest": "ecommerce/wsgi.py"
+      "dest": "/ecommerce/wsgi.py"
     }
-  ],
-  "build": {
-    "env": {
-      "DJANGO_SETTINGS_MODULE": "ecommerce.settings.production",
-      "PYTHONPATH": "/var/task:$PYTHONPATH"
-    }
-  }
+  ]
 }
