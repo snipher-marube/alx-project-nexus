@@ -46,6 +46,7 @@ CORS_ALLOWED_ORIGINS = [
 
 
 
+
 # Only allow specific HTTP methods
 CORS_ALLOW_METHODS = [
     'DELETE',
@@ -55,15 +56,3 @@ CORS_ALLOW_METHODS = [
     'POST',
     'PUT',
 ]
-
-# Static files (CSS, JavaScript, Images)
-STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / '../staticfiles'
-STATICFILES_DIRS = [BASE_DIR / '../static']
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
-
-# For admin static files
-WHITENOISE_USE_FINDERS = True
-WHITENOISE_MANIFEST_STRICT = False
-WHITENOISE_ALLOW_ALL_ORIGINS = True
