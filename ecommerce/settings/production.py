@@ -37,11 +37,11 @@ CSRF_COOKIE_SECURE = True
 DOMAIN = "https://alx-project-nexus-psi.vercel.app"
 CSRF_TRUSTED_ORIGINS = ['https://alx-project-nexus-psi.vercel.app']
 
-
 # Allow specific origins for cross-origin requests
 CORS_ALLOWED_ORIGINS = [
     'https://alx-project-nexus-psi.vercel.app',
 ]
+
 
 
 # Only allow specific HTTP methods
@@ -56,11 +56,6 @@ CORS_ALLOW_METHODS = [
 
 # Static files settings
 STATICFILES_DIRS = [BASE_DIR / 'static']
-STATICFILES_FINDERS = [
-    'django.contrib.staticfiles.finders.FileSystemFinder',
-    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    'whitenoise.finders.WhiteNoiseFinder',
-]
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'

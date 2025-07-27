@@ -22,9 +22,7 @@
     },
     {
       "src": "/(.*)",
-
       "dest": "ecommerce/wsgi.py"
-
     }
   ],
   "build": {
