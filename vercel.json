@@ -30,5 +30,6 @@
       "DJANGO_SETTINGS_MODULE": "ecommerce.settings.production",
       "PYTHONPATH": "/var/task:$PYTHONPATH"
     }
+
   }
 }
