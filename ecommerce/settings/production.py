@@ -37,10 +37,12 @@ CSRF_COOKIE_SECURE = True
 DOMAIN = "https://alx-project-nexus-psi.vercel.app"
 CSRF_TRUSTED_ORIGINS = ['https://alx-project-nexus-psi.vercel.app']
 
+
 # Allow specific origins for cross-origin requests
 CORS_ALLOWED_ORIGINS = [
     'https://alx-project-nexus-psi.vercel.app',
 ]
+
 
 
 
@@ -54,11 +56,12 @@ CORS_ALLOW_METHODS = [
     'PUT',
 ]
 
-# Static files settings
-STATICFILES_DIRS = [BASE_DIR / 'static']
+# Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATIC_ROOT = BASE_DIR / '../staticfiles'
+STATICFILES_DIRS = [BASE_DIR / '../static']
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
 
 # For admin static files
 WHITENOISE_USE_FINDERS = True
