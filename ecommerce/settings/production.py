@@ -1,7 +1,5 @@
 from .base import *
 from decouple import config
-import os
-import drf_yasg.openapi as openapi
 
 DEBUG = True
 
@@ -52,10 +50,5 @@ CORS_ALLOW_METHODS = [
     'PUT',
 ]
 
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, '../static'),
-    # Add path to drf-yasg static files
-    os.path.join(os.path.dirname(openapi.__file__), 'static', 'drf-yasg'),
 
-]
 
