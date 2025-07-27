@@ -22,9 +22,7 @@
   ],
   "build": {
     "env": {
-      "DJANGO_SETTINGS_MODULE": "ecommerce.settings.production",
-      "PYTHONPATH": "/var/task",
-      "DISABLE_COLLECTSTATIC": "1"
+      "DJANGO_SETTINGS_MODULE": "ecommerce.settings.production"
     }
   }
 }
