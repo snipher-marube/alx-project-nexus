@@ -1,14 +1,12 @@
 'use client'
 import { useState, useEffect } from "react";
-import Image from "next/image";
 
 const images = [
-  "/assets/carousel/img-1.png",
-  "/assets/carousel/img-2.png",
-  "/assets/carousel/img-3.png",
-  "/assets/carousel/img-4.png",
-  "/assets/carousel/img-5.png",
-  "/assets/carousel/img-6.png"
+  "/assets/carousel/img-1.gif",
+  "/assets/carousel/img-2.gif",
+  "/assets/carousel/img-3.gif",
+  "/assets/carousel/img-4.jpg",
+  "/assets/carousel/img-5.gif",
 ];
 
 export default function ImageCarousel() {
@@ -45,13 +43,14 @@ export default function ImageCarousel() {
         style={{ transform: `translateX(-${current * 100}%)` }}
       >
         {images.map((src, index) => (
-          <div key={index} className="min-w-full h-[500px] md:h-[700px] relative">
-            <Image
+          <div
+            key={index}
+            className="min-w-full h-[500px] md:h-[500px] relative"
+          >
+            <img
               src={src}
               alt={`Slide ${index + 1}`}
-              fill
-              className="object-cover"
-              priority={index === 0}
+              className="w-full h-full object-cover"
             />
           </div>
         ))}
@@ -60,14 +59,14 @@ export default function ImageCarousel() {
       <button
         onClick={prevSlide}
         aria-label="Previous slide"
-        className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-black bg-opacity-50 hover:bg-opacity-80 text-white p-2 rounded-full"
+        className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-opacity-50 hover:bg-opacity-80 text-black p-2 rounded-full"
       >
         &#10094;
       </button>
       <button
         onClick={nextSlide}
         aria-label="Next slide"
-        className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-black bg-opacity-50 hover:bg-opacity-80 text-white p-2 rounded-full"
+        className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-opacity-50 hover:bg-opacity-80 text-red-500 p-2 rounded-full"
       >
         &#10095;
       </button>

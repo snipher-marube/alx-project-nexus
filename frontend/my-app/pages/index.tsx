@@ -144,10 +144,11 @@ export default function Home() {
         <div className="flex-1">
           <ImageCarousel
             images={[
-              "/images/carousel1.jpg",
-              "/images/carousel2.jpg",
-              "/images/carousel3.jpg",
-              "/images/carousel4.jpg",
+              "../public/assets/carousel/img-1.gif",
+              "../public/assets/carousel/img-2.gif",
+              "../public/assets/carousel/img-3.gif",
+              "../public/assets/carousel/img-4.jpg",
+              "../public/assets/carousel/img-5.gif",
             ]}
           />
         </div>
@@ -159,9 +160,9 @@ export default function Home() {
           <div key={section.title}>
             <div className="flex items-center justify-between mb-3">
               <h2 className="text-xl font-bold text-gray-800">{section.title}</h2>
-              <a href="#" className="text-blue-600 hover:underline text-sm">
+              <Link href="/products" className="text-blue-600 hover:underline text-sm">
                 See All
-              </a>
+              </Link>
             </div>
             <div className="overflow-x-auto">
               <div className="flex space-x-6">

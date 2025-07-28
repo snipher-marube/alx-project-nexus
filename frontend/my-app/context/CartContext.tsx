@@ -1,6 +1,8 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 
 interface CartItem {
+  image: string | Blob | undefined;
+  title: string | undefined;
   id: number;
   name: string;
   primary_image: {

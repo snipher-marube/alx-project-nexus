@@ -11,7 +11,7 @@ export default function CartPage() {
   }, 0);
 
   return (
-    <main className="bg-slate-100 min-h-screen text-black py-12 px-6">
+    <main className="  min-h-screen text-black py-12 px-6">
       <div className="max-w-4xl mx-auto">
         <h1 className="text-2xl font-bold mb-6">Your Cart</h1>
 

@@ -44,7 +44,7 @@ export default function ProductsPage({products}: {products: ProductList[]}) {
   };
 
   return (
-    <main className="min-h-screen bg-slate-100 py-12 px-6 text-black">
+    <main className="min-h-screen py-12 px-6 text-black">
       <div className="max-w-7xl mx-auto">
         <h2 className="text-3xl font-bold text-center text-gray-800 mb-8">Our Products</h2>
 

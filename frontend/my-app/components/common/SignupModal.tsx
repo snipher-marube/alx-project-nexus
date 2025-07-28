@@ -19,14 +19,8 @@ export default function SignupModal({ onClose, onSwitch }: SignupModalProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Basic client-side validation
-    if (!firstName || !lastName || !email || !phone || !password || !confirmPassword) {
-      setError('All fields are required.');
-      return;
-    }
-
     if (password !== confirmPassword) {
-      setError('Passwords do not match.');
+      setError('Passwords do not match');
       return;
     }
 
@@ -34,13 +28,13 @@ export default function SignupModal({ onClose, onSwitch }: SignupModalProps) {
     setError('');
 
     try {
-      const res = await fetch('https://alx-project-nexus-psi.vercel.app/auth/register/', {
+      const response = await fetch('https://alx-project-nexus-psi.vercel.app/api/v1/auth/register/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          email,
           first_name: firstName,
           last_name: lastName,
+          email,
           phone,
           user_type: 'CUSTOMER',
           password,
@@ -48,22 +42,16 @@ export default function SignupModal({ onClose, onSwitch }: SignupModalProps) {
         }),
       });
 
-      const data = await res.json();
+      const data = await response.json();
 
-      if (!res.ok) {
-        // Backend returns detailed errors; combine them if available
-        if (data && typeof data === 'object') {
-          const errors = Object.values(data).flat().join(' ');
-          throw new Error(errors || 'Registration failed.');
-        } else {
-          throw new Error('Registration failed.');
-        }
+      if (!response.ok) {
+        throw new Error(data.detail || data.message || JSON.stringify(data));
       }
 
-      // Success: user added to database
-      onClose(); // close modal or redirect to login
+      alert("Account created successfully! Check your email for verification.");
+      onClose();
     } catch (err: any) {
-      setError(err.message || 'Something went wrong.');
+      setError(err.message || 'Signup failed');
     } finally {
       setLoading(false);
     }
@@ -129,7 +117,7 @@ export default function SignupModal({ onClose, onSwitch }: SignupModalProps) {
           <button
             type="submit"
             disabled={loading}
-            className={`w-full p-2 rounded ${loading ? 'bg-gray-400' : 'bg-green-600 hover:bg-green-700'} text-black`}
+            className={`w-full p-2 rounded ${loading ? 'bg-gray-400' : 'bg-green-600 hover:bg-green-700'} text-white`}
           >
             {loading ? 'Signing up...' : 'Sign Up'}
           </button>

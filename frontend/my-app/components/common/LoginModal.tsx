@@ -4,9 +4,10 @@ import axios from 'axios';
 interface LoginModalProps {
   onClose: () => void;
   onSwitch: () => void;
+  onLoginSuccess: (userId: string) => void;
 }
 
-export default function LoginModal({ onClose, onSwitch }: LoginModalProps) {
+export default function LoginModal({ onClose, onSwitch, onLoginSuccess }: LoginModalProps) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -18,15 +19,16 @@ export default function LoginModal({ onClose, onSwitch }: LoginModalProps) {
     setLoading(true);
 
     try {
-      const res = await axios.post('https://alx-project-nexus-psi.vercel.app/auth/login', {
+      const res = await axios.post('https://alx-project-nexus-psi.vercel.app/api/v1/auth/login/', {
         email,
         password
       });
 
-      // You might want to store token or user info from res.data
-      console.log("Login success:", res.data);
+      const userId = res.data?.user?.id;
+      if (!userId) throw new Error("User ID missing from server response");
 
-      onClose(); // close modal on success
+      alert('Login successful!');
+      onLoginSuccess(userId);
     } catch (err: any) {
       const message = err.response?.data?.message || 'Login failed';
       setError(message);
