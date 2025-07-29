@@ -1,3 +1,4 @@
+//api products response interface
 export interface ProductsResponse {
   count: number;
   next: string | null;
@@ -5,7 +6,7 @@ export interface ProductsResponse {
   results: ProductList[];
 }
 
-
+//each product returned interface and saved as an array in the result value of the api response..
 export interface ProductList {
   id: number;
   name: string;
