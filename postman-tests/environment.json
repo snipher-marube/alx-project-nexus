@@ -1,0 +1,15 @@
+{
+  "id": "c37901c8-294e-49b1-818c-6f4d8a964fac",
+  "name": "alx",
+  "values": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8000",
+      "type": "default",
+      "enabled": true
+    }
+  ],
+  "_postman_variable_scope": "environment",
+  "_postman_exported_at": "2025-07-23T17:49:40.004Z",
+  "_postman_exported_using": "Postman/11.55.2"
+}

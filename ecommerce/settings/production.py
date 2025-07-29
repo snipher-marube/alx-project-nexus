@@ -1,21 +1,23 @@
 from .base import *
 from decouple import config
 
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['.vercel.app']
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': config('DATABASE_NAME'),
-        'USER': config('DATABASE_USER'),
-        'PASSWORD': config('DATABASE_PASSWORD'),
-        'HOST': config('DATABASE_HOST'),
-        'PORT': config('DATABASE_PORT'),
+        'NAME': config('NEON_DATABASE_NAME'),
+        'USER': config('NEON_DATABASE_USER'),
+        'PASSWORD': config('NEON_DATABASE_PASSWORD'),
+        'HOST': config('NEON_DATABASE_HOST'),
+        'PORT': config('NEON_DATABASE_PORT'),
         'CONN_MAX_AGE': 600,  # Keep the connection open for 10 minutes
         'OPTIONS': {
-            'sslmode': 'prefer',  # Use SSL if available',
+            'sslmode': 'require',
+            'client_encoding': 'UTF8',
+
         }
     }
 }
@@ -32,13 +34,12 @@ SECURE_REFERRER_POLICY = "strict-origin-when-cross-origin"
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 
-DOMAIN = ""
-
-# CORS Configuration
+DOMAIN = "https://alx-project-nexus-psi.vercel.app"
+CSRF_TRUSTED_ORIGINS = ['https://alx-project-nexus-psi.vercel.app']
+# Allow specific origins for cross-origin requests
 CORS_ALLOWED_ORIGINS = [
-    "https://your-production-domain.com",  # Your production frontend
+    'https://alx-project-nexus-psi.vercel.app',
 ]
-
 # Only allow specific HTTP methods
 CORS_ALLOW_METHODS = [
     'DELETE',
@@ -48,4 +49,6 @@ CORS_ALLOW_METHODS = [
     'POST',
     'PUT',
 ]
+
+
 
