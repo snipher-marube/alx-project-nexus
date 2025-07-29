@@ -25,12 +25,12 @@ export default function CartPage() {
                 className="bg-white rounded-lg shadow p-4 flex items-center gap-4"
               >
                 <img
-                  src={item.image}
-                  alt={item.title}
+                  src={item.primary_image}
+                  alt={item.name}
                   className="w-24 h-24 object-cover rounded"
                 />
                 <div className="flex-1">
-                  <h2 className="text-lg font-semibold text-gray-800">{item.title}</h2>
+                  <h2 className="text-lg font-semibold text-gray-800">{item.name}</h2>
                   <p className="text-green-600 font-bold">{item.price}</p>
                   <p className="text-sm text-gray-500">Quantity: {item.quantity}</p>
                 </div>
