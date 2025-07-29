@@ -5,6 +5,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['.vercel.app']
 
+# Database configuration remains the same
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -13,19 +14,18 @@ DATABASES = {
         'PASSWORD': config('NEON_DATABASE_PASSWORD'),
         'HOST': config('NEON_DATABASE_HOST'),
         'PORT': config('NEON_DATABASE_PORT'),
-        'CONN_MAX_AGE': 600,  # Keep the connection open for 10 minutes
+        'CONN_MAX_AGE': 600,
         'OPTIONS': {
             'sslmode': 'require',
             'client_encoding': 'UTF8',
-
         }
     }
 }
 
-# Security settings
+# Security settings (keep these)
 SECURE_SSL_REDIRECT = True
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-SECURE_HSTS_SECONDS = 31536000  # 1 year
+SECURE_HSTS_SECONDS = 31536000
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 SECURE_HSTS_PRELOAD = True
 SECURE_BROWSER_XSS_FILTER = True
@@ -34,13 +34,25 @@ SECURE_REFERRER_POLICY = "strict-origin-when-cross-origin"
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 
+# Domain and CORS settings 
 DOMAIN = "https://alx-project-nexus-psi.vercel.app"
-CSRF_TRUSTED_ORIGINS = ['https://alx-project-nexus-psi.vercel.app']
-# Allow specific origins for cross-origin requests
+CSRF_TRUSTED_ORIGINS = [
+    'https://alx-project-nexus-psi.vercel.app',
+    'http://192.168.0.26:3000',  # Add your local dev server
+]
+
+# CORS Configuration - UPDATED
 CORS_ALLOWED_ORIGINS = [
     'https://alx-project-nexus-psi.vercel.app',
+    'http://192.168.0.26:3000', # Add your local dev server
 ]
-# Only allow specific HTTP methods
+
+# For development, you might want to allow all origins (remove in production)
+if DEBUG:
+    CORS_ALLOW_ALL_ORIGINS = True
+    CORS_ALLOW_CREDENTIALS = True
+
+# Allow specific HTTP methods
 CORS_ALLOW_METHODS = [
     'DELETE',
     'GET',
@@ -50,5 +62,22 @@ CORS_ALLOW_METHODS = [
     'PUT',
 ]
 
+# Allow specific headers
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+]
 
+# Allow credentials if needed
+CORS_ALLOW_CREDENTIALS = True
 
+CORS_EXPOSE_HEADERS = ['Content-Disposition']  # For file downloads
+CSRF_COOKIE_SAMESITE = 'Lax'
+SESSION_COOKIE_SAMESITE = 'Lax'
