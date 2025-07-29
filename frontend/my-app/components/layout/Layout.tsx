@@ -2,12 +2,13 @@ import React, { useState } from "react";
 import Header from "@/components/layout/Header";
 import LoginModal from "@/components/common/LoginModal";
 import SignupModal from "@/components/common/SignupModal";
+import Footer from "./Footer";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const [showLogin, setShowLogin] = useState(false);
   const [showSignup, setShowSignup] = useState(false);
 
-  // Functions to open modals, passed down to Header
+
   const openLogin = () => {
     setShowLogin(true);
     setShowSignup(false);
@@ -43,6 +44,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       )}
 
       <main>{children}</main>
+      <Footer />
     </>
   );
 }
