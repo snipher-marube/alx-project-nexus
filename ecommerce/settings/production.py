@@ -2,7 +2,7 @@ from .base import *
 from decouple import config
 import cloudinary
 
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['.vercel.app']
 
@@ -92,5 +92,5 @@ if not DEBUG:
         secure=True
     )
 
-# default file storage
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+    # default file storage
+    DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'

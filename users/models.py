@@ -8,7 +8,6 @@ from phonenumber_field.modelfields import PhoneNumberField
 from django.core.validators import FileExtensionValidator
 from django.utils.text import slugify
 from django.conf import settings
-from django.conf import settings
 
 # Import CloudinaryField only if not in DEBUG mode
 if not settings.DEBUG:
