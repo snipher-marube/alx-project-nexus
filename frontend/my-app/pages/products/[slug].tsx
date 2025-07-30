@@ -1,6 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
 import { GetServerSideProps } from "next";
-import Image from "next/image";
 import { Product } from "@/interface/Products";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
