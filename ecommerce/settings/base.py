@@ -31,6 +31,8 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'cloudinary',
+    'cloudinary_storage',
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'rest_framework',
@@ -235,3 +237,4 @@ CORS_ALLOW_HEADERS = [
     'x-requested-with',
 ]
 CORS_EXPOSE_HEADERS = ['Content-Disposition']  # For file downloads
+
