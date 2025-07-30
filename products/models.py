@@ -6,10 +6,13 @@ from django.utils.translation import gettext_lazy as _
 from django.core.exceptions import ValidationError
 from django.db.models import Q, F, Avg
 from django.utils import timezone
+from django.conf import settings
 from decimal import Decimal
 
 User = get_user_model()
 
+if not settings.DEBUG:
+    from cloudinary.models import CloudinaryField
 
 class Category(models.Model):
     """
@@ -67,12 +70,26 @@ class Brand(models.Model):
     name = models.CharField(_('name'), max_length=100, unique=True)
     slug = models.SlugField(_('slug'), max_length=100, unique=True)
     description = models.TextField(_('description'), blank=True)
-    logo = models.ImageField(
-        _('logo'),
-        upload_to='brands/logos/',
-        null=True,
-        blank=True
-    )
+    # use cloudinaryField for image storage if settings.DEBUG is False
+    if not settings.DEBUG:
+        logo = CloudinaryField(
+            'logo',
+            resource_type='image',
+            null=True,
+            blank=True,
+            transformation={
+                'width': 200,
+                'height': 200,
+                'crop': 'fill'
+            }
+        )
+    else:
+        logo = models.ImageField(
+            _('logo'),
+            upload_to='brands/logos/',
+            null=True,
+            blank=True
+        )
     is_active = models.BooleanField(_('is active'), default=True)
     website = models.URLField(_('website'), blank=True)
     created_at = models.DateTimeField(_('created at'), auto_now_add=True)
@@ -278,10 +295,22 @@ class ProductImage(models.Model):
         related_name='images',
         verbose_name=_('product')
     )
-    image = models.ImageField(
-        _('image'),
-        upload_to='products/images/'
-    )
+    # Use CloudinaryField for image storage if settings.DEBUG is False
+    if not settings.DEBUG:
+        image = CloudinaryField(
+            'image',
+            resource_type='image',
+            transformation={
+                'width': 800,
+                'height': 800,
+                'crop': 'limit'
+            }
+        )
+    else:
+        image = models.ImageField(
+            _('image'),
+            upload_to='products/images/'
+        )
     alt_text = models.CharField(
         _('alt text'),
         max_length=125,

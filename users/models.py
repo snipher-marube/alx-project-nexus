@@ -3,16 +3,16 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.utils.translation import gettext_lazy as _
 from django.core.exceptions import ValidationError
-from django.db.models.signals import post_save, pre_save
-from django.dispatch import receiver
 from django.utils import timezone
 from phonenumber_field.modelfields import PhoneNumberField
 from django.core.validators import FileExtensionValidator
 from django.utils.text import slugify
 from django.conf import settings
-from django.core.mail import send_mail
-from django.template.loader import render_to_string
-from django.utils.html import strip_tags
+from django.conf import settings
+
+# Import CloudinaryField only if not in DEBUG mode
+if not settings.DEBUG:
+    from cloudinary.models import CloudinaryField
 
 
 class UserManager(BaseUserManager):
@@ -227,17 +227,30 @@ class Profile(models.Model):
         blank=True,
         null=True,
     )
-    
-    profile_picture = models.ImageField(
-        _('profile picture'),
-        upload_to='profile_pictures/%Y/%m/',
-        blank=True,
-        null=True,
-        validators=[
-            FileExtensionValidator(allowed_extensions=['jpg', 'jpeg', 'png']),
-        ],
-        help_text=_('Maximum file size: 2MB. JPG, JPEG, or PNG only.'),
-    )
+    # use CloudinaryField if not in DEBUG mode
+    if not settings.DEBUG:
+        profile_picture = CloudinaryField(
+            _('profile picture'),
+            blank=True,
+            null=True,
+            resource_type='image',
+            upload_to='profile_pictures/%Y/%m/',
+            validators=[
+                FileExtensionValidator(allowed_extensions=['jpg', 'jpeg', 'png']),
+            ],
+            help_text=_('Maximum file size: 2MB. JPG, JPEG, or PNG only.'),
+        )
+    else:
+        profile_picture = models.ImageField(
+            _('profile picture'),
+            upload_to='profile_pictures/%Y/%m/',
+            blank=True,
+            null=True,
+            validators=[
+                FileExtensionValidator(allowed_extensions=['jpg', 'jpeg', 'png']),
+            ],
+            help_text=_('Maximum file size: 2MB. JPG, JPEG, or PNG only.'),
+        )
     
     bio = models.TextField(
         _('biography'),
