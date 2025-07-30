@@ -1182,6 +1182,10 @@ Thanks to all our amazing contributors! 🎉
 
 [![Contributors](https://contrib.rocks/image?repo=snipher-marube/alx-project-nexus)](https://github.com/snipher-marube/alx-project-nexus/graphs/contributors)
 
+Special thanks to:
+- [Brian-Branson](https://github.com/Brian-Branson)
+- [DevBuike](https://github.com/DevBuike)
+
 ### ❤️ Made with Love
 
 **Built with ❤️ by the ALX ProDev Backend Engineering Program**
