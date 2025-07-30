@@ -25,13 +25,13 @@ export default function CartPage() {
                 className="bg-white rounded-lg shadow p-4 flex items-center gap-4"
               >
                 <img
-                  src={item.primary_image}
-                  alt={item.name}
+                  src={item.primary_image.image_url}
+                  alt={item.primary_image.image_url}
                   className="w-24 h-24 object-cover rounded"
                 />
                 <div className="flex-1">
                   <h2 className="text-lg font-semibold text-gray-800">{item.name}</h2>
-                  <p className="text-green-600 font-bold">{item.price}</p>
+                  <p className="text-green-600 font-bold">${item.price}</p>
                   <p className="text-sm text-gray-500">Quantity: {item.quantity}</p>
                 </div>
                 <button
@@ -45,7 +45,7 @@ export default function CartPage() {
 
             <div className="bg-white rounded-lg shadow p-4 flex justify-between items-center">
               <p className="text-xl font-semibold text-gray-800">
-                Total: KSh {totalPrice.toLocaleString(undefined, {
+                Total: ${totalPrice.toLocaleString(undefined, {
                   minimumFractionDigits: 2,
                   maximumFractionDigits: 2,
                 })}
@@ -59,7 +59,7 @@ export default function CartPage() {
 
             <button
               onClick={clearCart}
-              className="text-sm text-gray-600 hover:text-red-600 mt-4"
+              className="text-sm text-white hover:text-red-600 mt-4 bg-red-500 py-3 px-6 rounded"
             >
               Clear Cart
             </button>

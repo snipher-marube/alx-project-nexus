@@ -12,7 +12,7 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ onShowLogin, onShowSignup }) => {
   const [showAccountMenu, setShowAccountMenu] = useState(false);
   const [showHamburger, setShowHamburger] = useState(false);
-  const { cartItems } = useCart();
+  const { cart } = useCart();
 
   const toggleAccountMenu = () => {
     setShowAccountMenu((prev) => !prev);
@@ -40,7 +40,7 @@ const Header: React.FC<HeaderProps> = ({ onShowLogin, onShowSignup }) => {
           </li>
           <li>
             <Link href="/Cart" className="text-white hover:text-red-400">
-              Cart
+              Cart <sup>{cart.length}</sup>
             </Link>
           </li>
           

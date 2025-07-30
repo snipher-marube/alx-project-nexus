@@ -67,6 +67,7 @@ export default function ProductsPage({products}: {products: ProductList[]}) {
                   onClick={(e) => {
                     e.preventDefault();
                     handleAddToCart(product);
+                    alert("Added to cart!");
                   }}
                   className="mt-auto bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
                 >

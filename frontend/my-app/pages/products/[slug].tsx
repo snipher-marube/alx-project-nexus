@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { GetServerSideProps } from "next";
 import { Product } from "@/interface/Products";
+import { useCart } from "@/context/CartContext";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { slug } = context.params!;
@@ -26,6 +27,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
 
 export default function ProductDetailPage( {product}: {product: Product}) {
+  const { addToCart } = useCart();
 
   return (
     <main className="p-6 bg-gray-100 min-h-screen text-black">
@@ -37,7 +39,7 @@ export default function ProductDetailPage( {product}: {product: Product}) {
         />
         <div className="flex-1">
           <h1 className="text-2xl font-bold mb-2">{product.name}</h1>
-          <p className="text-green-600 font-bold text-xl mb-4">{product.price}</p>
+          <p className="text-green-600 font-bold text-xl mb-4">${product.price}</p>
           <p className="text-gray-700 mb-6">{product.description}</p>
           <button
             className="w-full bg-blue-600 text-white py-3 rounded hover:bg-blue-700"
@@ -48,17 +50,9 @@ export default function ProductDetailPage( {product}: {product: Product}) {
           >
             Add to Cart
           </button>
-
-                </div>
-              </div>
-            </main>
-          );
-        }
-
-
-function addToCart(product: Product) {
-  const existing = JSON.parse(localStorage.getItem("cart") || "[]");
-  existing.push(product);
-  localStorage.setItem("cart", JSON.stringify(existing));
-  alert("Added to cart!");
+        </div>
+      </div>
+    </main>
+  );
 }
+
