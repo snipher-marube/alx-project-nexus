@@ -1,11 +1,16 @@
 asgiref==3.9.1
+certifi==2025.7.14
+charset-normalizer==3.4.2
+cloudinary==1.44.1
 Django==5.2.4
+django-cloudinary-storage==0.3.0
 django-cors-headers==4.7.0
 django-filter==25.1
 django-phonenumber-field==8.1.0
 django-rest-knox==5.0.2
 djangorestframework==3.16.0
 drf-yasg==1.21.10
+idna==3.10
 inflection==0.5.1
 Markdown==3.8.2
 packaging==25.0
@@ -15,6 +20,9 @@ psycopg2-binary==2.9.10
 python-decouple==3.8
 pytz==2025.2
 PyYAML==6.0.2
+requests==2.32.4
+six==1.17.0
 sqlparse==0.5.3
 uritemplate==4.2.0
+urllib3==2.5.0
 whitenoise==6.9.0
