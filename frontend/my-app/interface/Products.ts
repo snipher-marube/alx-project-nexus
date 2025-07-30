@@ -12,7 +12,10 @@ export interface ProductList {
   name: string;
   slug: string;
   price: string;
-  primary_image: string;
+  primary_image: {
+    image_url: string;
+    alt_text: string;
+  };
   quantity: number;
   compare_at_price?: string;
   discount_percentage?: string;
@@ -29,7 +32,10 @@ export interface Product {
   name: string;
   slug: string;
   price: string;
-  primary_image: string;
+  primary_image: {
+    image_url: string;
+    alt_text: string;
+  };
   description: string;
   quantity: number;
 }

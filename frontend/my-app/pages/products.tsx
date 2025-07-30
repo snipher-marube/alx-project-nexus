@@ -57,12 +57,12 @@ export default function ProductsPage({products}: {products: ProductList[]}) {
             <Link key={product.id} href={`/products/${product.slug}`} className="block">
               <div className="bg-white rounded-lg shadow p-4 flex flex-col items-center text-center hover:shadow-md transition">
                 <img
-                  src={product.primary_image}
-                  alt={product.name}
+                  src={product.primary_image.image_url}
+                  alt={product.primary_image.image_url}
                   className="w-full h-40 object-cover rounded mb-4"
                 />
                 <h3 className="text-lg font-semibold text-gray-800 mb-1">{product.name}</h3>
-                <p className="text-green-600 font-bold mb-2">{product.price}</p>
+                <p className="text-green-600 font-bold mb-2">${product.price}</p>
                 <button
                   onClick={(e) => {
                     e.preventDefault();
