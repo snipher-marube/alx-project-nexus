@@ -229,16 +229,10 @@ class Profile(models.Model):
     # use CloudinaryField if not in DEBUG mode
     if not settings.DEBUG:
         profile_picture = CloudinaryField(
-            _('profile picture'),
+            'image',
             blank=True,
-            null=True,
-            resource_type='image',
-            upload_to='profile_pictures/%Y/%m/',
-            validators=[
-                FileExtensionValidator(allowed_extensions=['jpg', 'jpeg', 'png']),
-            ],
-            help_text=_('Maximum file size: 2MB. JPG, JPEG, or PNG only.'),
-        )
+            null=True
+    )
     else:
         profile_picture = models.ImageField(
             _('profile picture'),
