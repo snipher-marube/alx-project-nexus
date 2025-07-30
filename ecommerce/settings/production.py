@@ -2,7 +2,7 @@ from .base import *
 from decouple import config
 import cloudinary
 
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['.vercel.app']
 
