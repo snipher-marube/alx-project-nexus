@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import React, { useState } from "react";
 import Link from "next/link";
+import Image from 'next/image';
 import SearchBar from "../components/common/SearchBar";
 import { useCart } from "@/context/CartContext";
 import { ProductList, ProductsResponse } from "@/interface/Products";
@@ -28,12 +29,13 @@ export async function getServerSideProps() {
   }
 }
 
+
 export default function ProductsPage({products}: {products: ProductList[]}) {
   const [filteredProducts, setFilteredProducts] = useState(products);
   const { addToCart } = useCart();
 
   const handleSearch = (query: string) => {
-    const filtered = products.filter((product) =>
+    const filtered = products.filter((product) => 
       product.name.toLowerCase().includes(query.toLowerCase())
     );
     setFilteredProducts(filtered);
@@ -53,12 +55,12 @@ export default function ProductsPage({products}: {products: ProductList[]}) {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-          {Array.isArray(products) && products.map((product) => (
+          {Array.isArray(products) && filteredProducts.map((product) => (
             <Link key={product.id} href={`/products/${product.slug}`} className="block">
-              <div className="bg-white rounded-lg shadow p-4 flex flex-col items-center text-center hover:shadow-md transition">
-                <img
+              <div className="relative bg-white rounded-lg shadow p-4 flex flex-col items-center text-center hover:shadow-md transition">
+                <Image
                   src={product.primary_image.image_url}
-                  alt={product.primary_image.image_url}
+                  alt={product.name} width={400} height={450}
                   className="w-full h-40 object-cover rounded mb-4"
                 />
                 <h3 className="text-lg font-semibold text-gray-800 mb-1">{product.name}</h3>

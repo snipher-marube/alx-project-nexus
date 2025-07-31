@@ -4,7 +4,7 @@ const nextConfig: NextConfig = {
   /* config options here */
   reactStrictMode: true,
   images: {
-    domains: ['alx-project-nexus-psi.vercel.app'],
+    domains: ['res.cloudinary.com'],
   }
 
 };

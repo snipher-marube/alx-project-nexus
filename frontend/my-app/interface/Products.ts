@@ -16,6 +16,9 @@ export interface ProductList {
     image_url: string;
     alt_text: string;
   };
+  category: {
+    name: string;
+  };
   quantity: number;
   compare_at_price?: string;
   discount_percentage?: string;
