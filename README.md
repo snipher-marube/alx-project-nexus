@@ -372,9 +372,9 @@ ALX Project Nexus provides comprehensive API documentation with interactive test
 
 | Documentation Type | URL | Description |
 |-------------------|-----|-------------|
-| **Swagger UI** | `http://localhost:8000/swagger/` | Interactive API testing interface |
-| **Redoc** | `http://localhost:8000/redoc/` | Clean, responsive documentation |
-| **OpenAPI Schema** | `http://localhost:8000/api/schema/` | Raw OpenAPI 3.0 specification |
+| **Swagger UI** | `{{baseURL}}/swagger/` | Interactive API testing interface |
+| **Redoc** | `{{baseURL}}/redoc/` | Clean, responsive documentation |
+| **OpenAPI Schema** | `{{baseURL}}/api/schema/` | Raw OpenAPI 3.0 specification |
 | **Postman Collection** | `docs/postman/` | Ready-to-import Postman collection |
 
 ### 🔗 Core API Endpoints
@@ -397,6 +397,14 @@ ALX Project Nexus provides comprehensive API documentation with interactive test
 | `/api/v1/products/categories/` | GET, POST | Product categories | GET: ❌, POST: ✅ |
 | `/api/v1/products/search/` | GET | Advanced product search | ❌ |
 | `/api/v1/products/{slug}/reviews/` | GET, POST | Product reviews | GET: ❌, POST: ✅ |
+
+#### Product filtering and sorting
+| Endpoint | Method | Description | Auth Required |
+|----------|--------|-------------|---------------|
+| `/products/?category=category_slug` | GET | Filter by single category | ❌ |
+| `/products/?category=category1,category2` | GET | Filter by multiple categories | ❌ |
+| `/products/?category=electronics&include_subcategories=false` | GET | Exclude subcategories | ❌ |
+| `/products/?category=electronics&min_price=100&max_price=500` | GET | Combine with other filters | ❌ |
 
 #### Order Management
 | Endpoint | Method | Description | Auth Required |
