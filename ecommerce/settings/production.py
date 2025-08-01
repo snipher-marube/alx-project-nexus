@@ -84,10 +84,6 @@ CSRF_COOKIE_SAMESITE = 'Lax'
 SESSION_COOKIE_SAMESITE = 'Lax'
 
 # cloudinary settings
-<<<<<<< HEAD
-
-=======
->>>>>>> 95eed58fc0610d680eac4a5fdd9991de1aa843e9
 cloudinary.config(
     cloud_name=config('CLOUDINARY_CLOUD_NAME'),
     api_key=config('CLOUDINARY_API_KEY'),
