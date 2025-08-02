@@ -1,8 +1,11 @@
 //api products response interface
 export interface ProductsResponse {
+  links: {
+    next: string | null;
+    previous: string | null;
+  }
   count: number;
-  next: string | null;
-  previous: string | null;
+  page_size: number;
   results: ProductList[];
 }
 
@@ -41,4 +44,5 @@ export interface Product {
   };
   description: string;
   quantity: number;
+  is_featured: boolean;
 }
