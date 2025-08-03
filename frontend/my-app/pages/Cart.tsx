@@ -1,4 +1,4 @@
-// Cart.tsx
+
 /* eslint-disable @next/next/no-img-element */
 import { useCart } from "@/context/CartContext";
 import Link from "next/link";
@@ -7,7 +7,7 @@ export default function CartPage() {
   const { cart, removeFromCart, clearCart } = useCart();
 
   const totalPrice = cart.reduce((sum, item) => {
-    // Add a check to handle both string and number prices
+ 
     const price = typeof item.price === "string"
       ? parseFloat(item.price.replace(/[^\d.]/g, ""))
       : item.price;
@@ -36,7 +36,7 @@ export default function CartPage() {
                 />
                 <div className="flex-1">
                   <h2 className="text-lg font-semibold text-gray-800">{item.name}</h2>
-                  {/* Add a check to handle both string and number prices */}
+                  
                   <p className="text-green-600 font-bold">
                     ${typeof item.price === "string" ? parseFloat(item.price).toFixed(2) : item.price.toFixed(2)}
                   </p>

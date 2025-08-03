@@ -23,7 +23,7 @@ export default function LogoutButton() {
 
       localStorage.removeItem('token');
       alert('Logged out successfully!');
-      window.location.reload(); // or route to login/home
+      window.location.reload(); 
 
     } catch (error: any) {
       console.error('Logout failed:', error);

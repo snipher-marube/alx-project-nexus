@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 // eslint-disable-next-line @next/next/no-img-element
-import Image from "next/image"; // It's better to use next/image component for performance and accessibility reasons.
+import Image from "next/image"; 
 
 const statusColor = {
   Pending: "text-yellow-600 bg-yellow-100",
@@ -9,7 +9,6 @@ const statusColor = {
   Cancelled: "text-red-600 bg-red-100",
 };
 
-// Updated the Product interface to match the CartItem structure
 interface OrderProduct {
   id: number;
   name: string;
@@ -96,13 +95,13 @@ export default function Orders() {
                                 className="bg-neutral-50 rounded-lg shadow p-4 flex items-center gap-4"
                               >
                                 <img
-                                  src={product.primary_image.image_url} // Corrected property
-                                  alt={product.name} // Corrected alt text
+                                  src={product.primary_image.image_url} 
+                                  alt={product.name} 
                                   className="w-16 h-16 object-cover rounded"
                                 />
                                 <div>
-                                  <h3 className="font-semibold text-sm text-gray-800">{product.name}</h3> {/* Corrected property */}
-                                  <p className="text-green-600 text-sm font-bold">KSh {product.price.toFixed(2)}</p> {/* Corrected property and added formatting */}
+                                  <h3 className="font-semibold text-sm text-gray-800">{product.name}</h3> 
+                                  <p className="text-green-600 text-sm font-bold">KSh {product.price.toFixed(2)}</p> 
                                   <p className="text-gray-500 text-xs">Qty: {product.quantity}</p>
                                 </div>
                               </div>

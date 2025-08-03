@@ -7,13 +7,13 @@ interface CartItem {
     image_url: string;
     alt_text: string;
   };
-  price: number; // The price is now a number
+  price: number;
   quantity: number;
 }
 
 interface CartContextType {
   cart: CartItem[];
-  addToCart: (item: any) => void; // Using 'any' here for flexibility during the parsing step
+  addToCart: (item: any) => void; 
   removeFromCart: (id: number) => void;
   clearCart: () => void;
 }
@@ -23,7 +23,7 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 export const CartProvider = ({ children }: { children: ReactNode }) => {
   const [cart, setCart] = useState<CartItem[]>([]);
 
-  // Load cart from localStorage on initial render
+  
   useEffect(() => {
     const storedCart = localStorage.getItem("cart");
     if (storedCart) {
@@ -31,7 +31,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     }
   }, []);
 
-  // Save cart to localStorage whenever the cart state changes
+  
   useEffect(() => {
     if (cart.length > 0) {
       localStorage.setItem("cart", JSON.stringify(cart));
@@ -49,12 +49,12 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
         );
       }
       
-      // Parse the price to a number before adding the item to the cart
+      
       const priceAsNumber = parseFloat(item.price.replace(/[^\d.]/g, ""));
 
       return [...prev, { 
           ...item, 
-          price: priceAsNumber, // Store the parsed number
+          price: priceAsNumber,
           quantity: 1 
       }];
     });

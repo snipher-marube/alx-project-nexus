@@ -1,4 +1,4 @@
-// Checkout.tsx
+
 /* eslint-disable @next/next/no-img-element */
 import { useCart } from "@/context/CartContext";
 import { useRouter } from "next/router";
@@ -11,7 +11,6 @@ export default function CheckoutPage() {
     const existingOrders = JSON.parse(localStorage.getItem("orders") || "[]");
     const orderId = `ORD${Date.now().toString().slice(-6)}`;
 
-    // Price is now a number, so no parsing is needed
     const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
     const order = {
@@ -41,16 +40,16 @@ export default function CheckoutPage() {
               className="bg-neutral-50 p-4 rounded-xl shadow flex items-center gap-4"
             >
               <img
-                // Aligned with the CartItem interface
+              
                 src={item.primary_image.image_url}
                 alt={item.name}
                 className="w-20 h-20 object-cover rounded"
               />
               <div>
-                {/* Aligned with the CartItem interface */}
+            
                 <h2 className="font-semibold text-lg text-gray-800">{item.name}</h2>
                 <p className="text-sm text-gray-500">
-                  {/* Price is now a number, formatted for display */}
+                  
                   {item.quantity} x ${item.price.toFixed(2)}
                 </p>
               </div>
