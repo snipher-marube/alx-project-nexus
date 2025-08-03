@@ -54,8 +54,50 @@ export default function Home({products, fashionProducts }: {products: ProductLis
 
   //console.log(featured);
   //console.log(fashionProducts);
+
+  const menus = [
   
-  return (
+    {
+      label: "Electronics",
+      items: [
+        { name: "Mobiles", href: "/electronics/mobiles" },
+        { name: "Laptops", href: "/electronics/laptops" },
+        { name: "TVs", href: "/electronics/tvs" },
+        { name: "Cameras", href: "/electronics/cameras" },
+        { name: "Tablets", href: "/electronics/tablets" },
+        { name: "Accessories", href: "/electronics/accessories" },
+      ],
+    },
+    {
+      label: "Fashion",
+      items: [
+        { name: "Suits", href: "/fashion/suits" },
+        { name: "Shorts", href: "/fashion/Jackets" },
+        { name: "Shirts", href: "/fashion/shirts" },
+        { name: "Shoes", href: "/fashion/shoes" },
+      ],
+    },
+    {
+      label: "Home & Office",
+      items: [
+        { name: "Furniture", href: "/home/beds" },
+        { name: "Bedding", href: "/home/sofas" },
+        { name: "Kitchen", href: "/home/tables" },
+        { name: "Appliances", href: "/home/closets" },
+      ],
+    },
+    {
+      label: "Health & Beauty",
+      items: [
+        { name: "Makeup", href: "/health/makeup" },
+        { name: "Hygiene", href: "/health/hygiene" },
+        { name: "Haircare", href: "/health/haircare" },
+        { name: "Fragrance", href: "/health/fragrance" },
+      ],
+    },
+  ];
+
+    return (
     <main className="text-black min-h-screen bg-slate-100 from-yellow-50 via-white to-stone-100 py-12 px-6">
       <div className="max-w-7xl mx-auto flex flex-row items-start gap-8">
         {/* Sidebar */}
