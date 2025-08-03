@@ -50,7 +50,7 @@ const Header: React.FC<HeaderProps> = ({
               <UserIcon className="h-6 w-6" />
             </button>
             {showAccountMenu && (
-              <div className="absolute right-[-30px] mt-2 pb-4 w-40 text-black bg-white border border-gray-300 rounded shadow z-10">
+              <div className="absolute right-[-30px] mt-2 pb-4 w-40 text-black bg-neutral-50 border border-gray-300 rounded shadow z-10">
                 {!isLoggedIn ? (
                   <>
                     <button className="block w-full text-left px-4 py-2 text-md hover:bg-gray-100" onClick={onShowLogin}>
@@ -75,7 +75,7 @@ const Header: React.FC<HeaderProps> = ({
       {/* Mobile Hamburger */}
       <CiMenuBurger className="md:hidden text-5xl text-white" onClick={toggleMobileMenu} />
       {showHamburger && (
-        <nav className="md:hidden mt-4 absolute top-[65px] right-0 p-5 w-full bg-white z-50 border border-gray-400 shadow-lg rounded-b-md">
+        <nav className="md:hidden mt-4 absolute top-[65px] right-0 p-5 w-full bg-neutral-50 z-50 border border-gray-400 shadow-lg rounded-b-md">
           <ul className="flex flex-col gap-6 text-2xl items-center">
             <li><Link href="/" className="text-black hover:text-red-400">Home</Link></li>
             <li><Link href="/products" className="text-black hover:text-red-400">Products</Link></li>
@@ -94,7 +94,7 @@ const Header: React.FC<HeaderProps> = ({
                 <UserIcon className="h-6 w-6" />
               </button>
               {showAccountMenu && (
-                <div className="mt-2 w-40 text-black bg-white border border-gray-300 rounded shadow z-10">
+                <div className="mt-2 w-40 text-black bg-neutral-50 border border-gray-300 rounded shadow z-10">
                   {!isLoggedIn ? (
                     <>
                       <button className="block w-full text-left px-4 py-2 text-md hover:bg-gray-100" onClick={() => { onShowLogin(); toggleAccountMenu(); }}>

@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+// eslint-disable-next-line @next/next/no-img-element
+import Image from "next/image"; // It's better to use next/image component for performance and accessibility reasons.
 
 const statusColor = {
   Pending: "text-yellow-600 bg-yellow-100",
@@ -7,11 +9,15 @@ const statusColor = {
   Cancelled: "text-red-600 bg-red-100",
 };
 
-interface Product {
-  id: string;
-  title: string;
-  image: string;
-  price: string;
+// Updated the Product interface to match the CartItem structure
+interface OrderProduct {
+  id: number;
+  name: string;
+  primary_image: {
+    image_url: string;
+    alt_text: string;
+  };
+  price: number;
   quantity: number;
 }
 
@@ -20,7 +26,7 @@ interface Order {
   date: string;
   total: number;
   status: "Pending" | "Shipped" | "Delivered" | "Cancelled";
-  products?: Product[];
+  products?: OrderProduct[];
 }
 
 export default function Orders() {
@@ -37,7 +43,7 @@ export default function Orders() {
   };
 
   return (
-    <main className="bg-slate-100 min-h-screen py-12 px-6 text-black">
+    <main className="bg-neutral-50-100 min-h-screen py-12 px-6 text-black">
       <div className="max-w-5xl mx-auto">
         <h1 className="text-3xl font-bold mb-8">All Orders</h1>
 
@@ -45,7 +51,7 @@ export default function Orders() {
           <p className="text-gray-600">You have no orders yet.</p>
         ) : (
           <div className="overflow-x-auto">
-            <table className="min-w-full bg-white border rounded shadow-sm">
+            <table className="min-w-full bg-neutral-50 border rounded shadow-sm">
               <thead className="bg-gray-100 text-left">
                 <tr>
                   <th className="p-4 text-sm font-semibold">Order ID</th>
@@ -87,16 +93,16 @@ export default function Orders() {
                             {order.products.map((product) => (
                               <div
                                 key={product.id}
-                                className="bg-white rounded-lg shadow p-4 flex items-center gap-4"
+                                className="bg-neutral-50 rounded-lg shadow p-4 flex items-center gap-4"
                               >
                                 <img
-                                  src={product.image}
-                                  alt={product.title}
+                                  src={product.primary_image.image_url} // Corrected property
+                                  alt={product.name} // Corrected alt text
                                   className="w-16 h-16 object-cover rounded"
                                 />
                                 <div>
-                                  <h3 className="font-semibold text-sm text-gray-800">{product.title}</h3>
-                                  <p className="text-green-600 text-sm font-bold">{product.price}</p>
+                                  <h3 className="font-semibold text-sm text-gray-800">{product.name}</h3> {/* Corrected property */}
+                                  <p className="text-green-600 text-sm font-bold">KSh {product.price.toFixed(2)}</p> {/* Corrected property and added formatting */}
                                   <p className="text-gray-500 text-xs">Qty: {product.quantity}</p>
                                 </div>
                               </div>

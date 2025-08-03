@@ -1,3 +1,4 @@
+// Checkout.tsx
 /* eslint-disable @next/next/no-img-element */
 import { useCart } from "@/context/CartContext";
 import { useRouter } from "next/router";
@@ -10,10 +11,8 @@ export default function CheckoutPage() {
     const existingOrders = JSON.parse(localStorage.getItem("orders") || "[]");
     const orderId = `ORD${Date.now().toString().slice(-6)}`;
 
-    const total = cart.reduce((sum, item) => {
-      const price = parseFloat(item.price.replace(/[^\d.]/g, ""));
-      return sum + price * item.quantity;
-    }, 0);
+    // Price is now a number, so no parsing is needed
+    const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
     const order = {
       id: orderId,
@@ -29,7 +28,7 @@ export default function CheckoutPage() {
   };
 
   return (
-    <main className="min-h-screen bg-slate-100 py-12 px-4 sm:px-8 lg:px-24 text-black">
+    <main className="min-h-screen bg-neutral-50-100 py-12 px-4 sm:px-8 lg:px-24 text-black">
       <h1 className="text-3xl font-bold text-center mb-8">Checkout</h1>
 
       {cart.length === 0 ? (
@@ -39,17 +38,20 @@ export default function CheckoutPage() {
           {cart.map((item) => (
             <div
               key={item.id}
-              className="bg-white p-4 rounded-xl shadow flex items-center gap-4"
+              className="bg-neutral-50 p-4 rounded-xl shadow flex items-center gap-4"
             >
               <img
-                src={item.image}
-                alt={item.title}
+                // Aligned with the CartItem interface
+                src={item.primary_image.image_url}
+                alt={item.name}
                 className="w-20 h-20 object-cover rounded"
               />
               <div>
-                <h2 className="font-semibold text-lg text-gray-800">{item.title}</h2>
+                {/* Aligned with the CartItem interface */}
+                <h2 className="font-semibold text-lg text-gray-800">{item.name}</h2>
                 <p className="text-sm text-gray-500">
-                  {item.quantity} x {item.price}
+                  {/* Price is now a number, formatted for display */}
+                  {item.quantity} x ${item.price.toFixed(2)}
                 </p>
               </div>
             </div>

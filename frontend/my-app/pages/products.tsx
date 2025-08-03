@@ -8,7 +8,7 @@ import { ProductList, ProductsResponse } from "@/interface/Products";
 
 
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps(context: { query: { page: any; }; }) {
   const currentPage = parseInt(context.query.page ?? '1', 10);
 
   try {
@@ -112,7 +112,7 @@ export default function ProductsPage({products, count, currentPage, pageSize }: 
           {message && <p>{message} </p>}
           {Array.isArray(filteredProducts) && filteredProducts.map((product) => (
             <Link key={product.id} href={`/products/${product.slug}`} className="block">
-              <div className="relative bg-white rounded-lg shadow p-4 flex flex-col items-center text-center hover:shadow-md transition">
+              <div className="relative bg-neutral-50 rounded-lg shadow p-4 flex flex-col items-center text-center hover:shadow-md transition">
                 <Image
                   src={product.primary_image.image_url}
                   alt={product.name} width={400} height={450}

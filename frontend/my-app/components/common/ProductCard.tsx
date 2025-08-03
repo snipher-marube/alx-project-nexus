@@ -19,7 +19,7 @@ const ProductCard: React.FC<ProductProps> = ({
   onAddToCart,
 }) => {
   return (
-    <div className="relative bg-white rounded shadow-md overflow-hidden w-60 hover:shadow-lg transition">
+    <div className="relative bg-gray-500 rounded shadow-md overflow-hidden w-60 hover:shadow-lg transition">
       {/* Discount Label */}
       {discountPercent && (
         <div className="absolute top-0 right-0 bg-orange-100 text-orange-600 text-xs px-2 py-1 rounded-bl">

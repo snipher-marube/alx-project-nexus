@@ -39,7 +39,7 @@ export default function LoginModal({ onClose, onSwitch, onLoginSuccess }: LoginM
 
   return (
     <div className="fixed inset-0 bg-transparent flex justify-center items-center z-50 text-black">
-      <div className="relative bg-white rounded-lg shadow-lg w-full max-w-md p-6">
+      <div className="relative bg-neutral-50 rounded-lg shadow-lg w-full max-w-md p-6">
         <h2 className="text-2xl font-bold mb-4 text-center">Login</h2>
 
         <form onSubmit={handleSubmit}>

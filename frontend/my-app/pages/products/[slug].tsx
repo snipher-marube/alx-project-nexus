@@ -31,7 +31,7 @@ export default function ProductDetailPage( {product}: {product: Product}) {
 
   return (
     <main className="p-6 bg-gray-100 min-h-screen text-black">
-      <div className="max-w-4xl mx-auto bg-white rounded shadow-md p-6 flex flex-col md:flex-row gap-8">
+      <div className="max-w-4xl mx-auto bg-neutral-50 rounded shadow-md p-6 flex flex-col md:flex-row gap-8">
         <img
           src={product.primary_image.image_url}
           alt={product.primary_image.image_url}

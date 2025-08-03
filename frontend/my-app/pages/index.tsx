@@ -98,10 +98,10 @@ export default function Home({products, fashionProducts }: {products: ProductLis
   ];
 
     return (
-    <main className="text-black min-h-screen bg-slate-100 from-yellow-50 via-white to-stone-100 py-12 px-6">
+    <main className="text-black min-h-screen bg-neutral-50-100 from-yellow-50 via-white to-stone-100 py-12 px-6">
       <div className="max-w-7xl mx-auto flex flex-row items-start gap-8">
         {/* Sidebar */}
-        <ul className="hidden md:flex flex-col space-y-2 p-4 bg-white rounded shadow max-w-sm w-64">
+        <ul className="hidden md:flex flex-col space-y-2 p-4 bg-neutral-50 rounded shadow max-w-sm w-64">
           {menus.map(({ label, items }) => (
             <li key={label}>
               <div
@@ -158,7 +158,7 @@ export default function Home({products, fashionProducts }: {products: ProductLis
                 <Link
                   
                   href={`/products/${product.slug}`}
-                  className="min-w-[220px] bg-white rounded-lg shadow p-4 hover:shadow-md transition"
+                  className="min-w-[220px] bg-neutral-50 rounded-lg shadow p-4 hover:shadow-md transition"
                 >
                   <div>
                     <img
@@ -190,7 +190,7 @@ export default function Home({products, fashionProducts }: {products: ProductLis
                 <Link
                   key={product.id}
                   href={`/products/${product.slug}`}
-                  className="min-w-[220px] bg-white rounded-lg shadow p-4 hover:shadow-md transition"
+                  className="min-w-[220px] bg-neutral-50 rounded-lg shadow p-4 hover:shadow-md transition"
                 >
                   <div>
                     <img

@@ -26,8 +26,8 @@ export default function ProductDetail() {
   }
 
   return (
-    <main className="p-6 bg-slate-100 min-h-screen text-black">
-      <div className="max-w-4xl mx-auto bg-white rounded shadow p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+    <main className="p-6 bg-gray-500 min-h-screen text-black">
+      <div className="max-w-4xl mx-auto bg-neutral-50 rounded shadow p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
         <img
           src={product.image}
           alt={product.title}

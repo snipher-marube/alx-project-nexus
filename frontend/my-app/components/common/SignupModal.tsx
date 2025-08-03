@@ -59,7 +59,7 @@ export default function SignupModal({ onClose, onSwitch }: SignupModalProps) {
 
   return (
     <div className="text-black fixed inset-0 bg-transparent flex justify-center items-center z-50">
-      <div className="bg-white rounded-lg shadow-lg w-full max-w-md p-6 relative">
+      <div className="bg-neutral-50 rounded-lg shadow-lg w-full max-w-md p-6 relative">
         <h2 className="text-2xl font-bold mb-4 text-center">Sign Up</h2>
 
         <form onSubmit={handleSubmit} className="text-black">

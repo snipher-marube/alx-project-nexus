@@ -1,3 +1,4 @@
+// Cart.tsx
 /* eslint-disable @next/next/no-img-element */
 import { useCart } from "@/context/CartContext";
 import Link from "next/link";
@@ -6,12 +7,16 @@ export default function CartPage() {
   const { cart, removeFromCart, clearCart } = useCart();
 
   const totalPrice = cart.reduce((sum, item) => {
-    const price = parseFloat(item.price.replace(/[^\d.]/g, ""));
+    // Add a check to handle both string and number prices
+    const price = typeof item.price === "string"
+      ? parseFloat(item.price.replace(/[^\d.]/g, ""))
+      : item.price;
+
     return sum + price * item.quantity;
   }, 0);
 
   return (
-    <main className="  min-h-screen text-black py-12 px-6">
+    <main className="min-h-screen text-black py-12 px-6">
       <div className="max-w-4xl mx-auto">
         <h1 className="text-2xl font-bold mb-6">Your Cart</h1>
 
@@ -22,7 +27,7 @@ export default function CartPage() {
             {cart.map((item) => (
               <div
                 key={item.id}
-                className="bg-white rounded-lg shadow p-4 flex items-center gap-4"
+                className="bg-neutral-50 rounded-lg shadow p-4 flex items-center gap-4"
               >
                 <img
                   src={item.primary_image.image_url}
@@ -31,7 +36,10 @@ export default function CartPage() {
                 />
                 <div className="flex-1">
                   <h2 className="text-lg font-semibold text-gray-800">{item.name}</h2>
-                  <p className="text-green-600 font-bold">${item.price}</p>
+                  {/* Add a check to handle both string and number prices */}
+                  <p className="text-green-600 font-bold">
+                    ${typeof item.price === "string" ? parseFloat(item.price).toFixed(2) : item.price.toFixed(2)}
+                  </p>
                   <p className="text-sm text-gray-500">Quantity: {item.quantity}</p>
                 </div>
                 <button
@@ -43,7 +51,7 @@ export default function CartPage() {
               </div>
             ))}
 
-            <div className="bg-white rounded-lg shadow p-4 flex justify-between items-center">
+            <div className="bg-neutral-50 rounded-lg shadow p-4 flex justify-between items-center">
               <p className="text-xl font-semibold text-gray-800">
                 Total: ${totalPrice.toLocaleString(undefined, {
                   minimumFractionDigits: 2,

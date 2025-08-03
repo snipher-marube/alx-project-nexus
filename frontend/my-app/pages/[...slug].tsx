@@ -36,7 +36,7 @@ export default function CategoryPage() {
   );
 
   return (
-    <main className="p-6 bg-gray-100 min-h-screen text-black">
+    <main className="p-6 bg-gray-500 min-h-screen text-black">
       <h1 className="text-2xl font-bold mb-6 capitalize">
         {subcategory ? `${subcategory} in ${category}` : "Category"}
       </h1>
@@ -47,7 +47,7 @@ export default function CategoryPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
           {filtered.map((p) => (
             <Link href={`/products/${p.id}`} key={p.id}>
-              <div className="bg-white rounded shadow p-4 hover:shadow-lg cursor-pointer">
+              <div className="bg-gray-500 rounded shadow p-4 hover:shadow-lg cursor-pointer">
                 <img
                   src={p.image}
                   alt={p.title}

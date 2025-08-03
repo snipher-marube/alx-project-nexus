@@ -50,7 +50,7 @@ export default function ProductGrid() {
           <Link
             key={product.id}
             href={`/products/${product.id}`}
-            className="block bg-white rounded shadow p-4 hover:shadow-lg transition"
+            className="block bg-gray-500 rounded shadow p-4 hover:shadow-lg transition"
           >
             <img
               src={product.image}
