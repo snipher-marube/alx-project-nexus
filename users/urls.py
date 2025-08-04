@@ -17,10 +17,10 @@ urlpatterns = [
     path('logout-all/', UserLogoutAllAPIView.as_view(), name='logout-all'),
     path('profile/', UserProfileAPIView.as_view(), name='profile'),
     path('me/', UserAPIView.as_view(), name='user-detail'),
-    path('verify-email/<uuid:user_id>/<str:token>/', 
-         EmailVerificationAPIView.as_view(), 
+    path('verify-email/<str:uidb64>/<str:token>/',
+         EmailVerificationAPIView.as_view(),
          name='verify-email'),
-    path('resend-verification-email/', 
+    path('resend-verification-email/',
          ResendVerificationEmailAPIView.as_view(), 
          name='resend-verification-email'),
 ]
