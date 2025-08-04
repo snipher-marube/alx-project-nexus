@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 from decouple import config
+from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -157,9 +158,9 @@ REST_FRAMEWORK = {
 # Knox settings
 REST_KNOX = {
     'USER_SERIALIZER': 'users.serializers.UserSerializer',
-    'TOKEN_TTL': None,  # Token never expires by default
-    'AUTO_REFRESH': False,
-    'MIN_REFRESH_INTERVAL': 60,  # Minimum seconds between refresh
+    'TOKEN_TTL': timedelta(hours=24),
+    'AUTO_REFRESH': True,
+    'MIN_REFRESH_INTERVAL': 60,
     'AUTH_HEADER_PREFIX': 'Token',
 }
 
