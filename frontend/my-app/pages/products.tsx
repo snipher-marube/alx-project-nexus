@@ -72,7 +72,7 @@ export default function ProductsPage({products, count, currentPage, pageSize }: 
       };
 
     try {
-      const res = await fetch('/api/products');
+      const res = await fetch(`/api/products?search=${query}`);
       if (!res.ok) {
         throw new Error(`Failed to fetch: ${res.status}`);
       }
@@ -80,17 +80,18 @@ export default function ProductsPage({products, count, currentPage, pageSize }: 
       const data: ProductsResponse = await res.json();
       const productList = data.results;
 
-      const filtered = productList.filter((product) => 
-        product.name.toLowerCase().includes(query.toLowerCase())
-      );
-      if (filtered.length < 1) {
+      //const filtered = productList.filter((product) => 
+      //  product.name.toLowerCase().includes(query.toLowerCase())
+      //);
+      if (productList.length < 1) {
         setFilteredProducts([]);
         setMessage(`No products found for ${query}! `);
       } else {
-        setFilteredProducts(filtered);
+        setFilteredProducts(productList);
         setMessage('');
       }
     } catch (error) {
+      setFilteredProducts([]);
       setMessage('Error fetching products');
     }
   };

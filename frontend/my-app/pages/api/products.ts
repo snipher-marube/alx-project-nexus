@@ -3,9 +3,12 @@ export default async function handler(req, res) {
   let page = 1;
   let hasNext = true;
 
+  const { search } = req.query;
+
   try {
     while (hasNext) {
-      const response = await fetch(`https://alx-project-nexus-psi.vercel.app/api/v1/products/?page=${page}`);
+      const queryParam = search ? `search=${encodeURIComponent(search as string)}` : '';
+      const response = await fetch(`https://alx-project-nexus-psi.vercel.app/api/v1/products/?${queryParam}&page=${page}`);
       const data = await response.json();
 
       allResults.push(...data.results);

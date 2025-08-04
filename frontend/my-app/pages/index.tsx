@@ -4,6 +4,12 @@ import Link from "next/link";
 import ImageCarousel from "../components/common/ImageCarousel";
 import { ProductList, ProductsResponse } from "@/interface/Products";
 
+interface CategoryList {
+  id: number;
+  name: string;
+  slug: string;
+  full_path: string;
+}
 
 export async function getServerSideProps() {
   let products = [];
@@ -39,6 +45,7 @@ export async function getServerSideProps() {
 export default function Home({products, fashionProducts }: {products: ProductList[], fashionProducts: ProductList[]}) {
   const [featured, setFeatured] = useState(products);
   const [openMenu, setOpenMenu] = useState<string | null>(null);
+  const [categories, setCategories] = useState<CategoryList[]>([]);
 
   const toggleMenu = (label: string) => {
     setOpenMenu((prev) => (prev === label ? null : label));
@@ -52,8 +59,28 @@ export default function Home({products, fashionProducts }: {products: ProductLis
     setFeatured(featuredProducts);
   }, [products]);
 
-  //console.log(featured);
-  //console.log(fashionProducts);
+  useEffect(() => {
+    const CategoryList = async () => {
+      try {
+        const res = await fetch('/api/category');
+        if (!res.ok) {
+          throw new Error(`Failed to fetch: ${res.status}`);
+        }
+        const data = await res.json();
+
+        console.log('Fetched category data:', data);
+
+        const category: CategoryList[] = data.results;
+
+        setCategories(category);
+      } catch(error) {
+        console.log('error fetching categories', error)
+      }
+    };
+    CategoryList();
+  }, []);
+
+  console.log(categories);
 
   const menus = [
   
@@ -102,16 +129,16 @@ export default function Home({products, fashionProducts }: {products: ProductLis
       <div className="max-w-7xl mx-auto flex flex-row items-start gap-8">
         {/* Sidebar */}
         <ul className="hidden md:flex flex-col space-y-2 p-4 bg-neutral-50 rounded shadow max-w-sm w-64">
-          {menus.map(({ label, items }) => (
-            <li key={label}>
+          {categories.map((category) => (
+            <li key={category.id}>
               <div
                 className="flex items-center justify-between cursor-pointer font-medium hover:text-yellow-500 transition"
-                onClick={() => toggleMenu(label)}
+                onClick={() => toggleMenu(category.name)}
               >
-                <span>{label}</span>
-                <span className="text-sm ml-2">{openMenu === label ? "▼" : "›"}</span>
+                <span>{category.name}</span>
+                <span className="text-sm ml-2">{openMenu === category.name ? "▼" : "›"}</span>
               </div>
-              {openMenu === label && (
+              {openMenu === category.name && (
                 <ul className="ml-4 mt-2 pl-2 border-l border-gray-200 space-y-1">
                   {items.map(({ name, href }) => (
                     <li key={name}>

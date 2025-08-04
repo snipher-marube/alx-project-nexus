@@ -1,7 +1,41 @@
 /* eslint-disable @next/next/no-img-element */
 
 import { useRouter } from "next/router";
+import { GetServerSideProps } from "next";
 import Link from "next/link";
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  let allResults = [];
+  let page = 1;
+  let hasNext = true;
+
+  const { slug } = context.query;
+  const searchTerm = Array.isArray(slug) ? slug[slug.length -1] : slug;
+
+  try {
+    while (hasNext) {
+      const queryParam = searchTerm ? `search=${encodeURIComponent(searchTerm)}` : '';
+      const response = await fetch(`https://alx-project-nexus-psi.vercel.app/api/v1/products/?${queryParam}&page=${page}`);
+      const data = await response.json();
+
+      allResults.push(...data.results);
+      hasNext = !!data.links?.next;
+      page += 1;
+    }
+
+    const products = allResults;
+    return {
+      props: {
+        products,
+      }
+    }
+
+    //res.status(200).json({ results: allResults });
+  } catch (error) {
+    //res.status(500).json({ error: "Failed to fetch products." });
+    console.log('error fetching products');
+  }
+};
 
 const allProducts = [
   // Electronics - Mobiles
@@ -26,11 +60,12 @@ const allProducts = [
   { id: "h-b-5", title: "Kids Bed With Storage", category: "home", subcategory: "beds", price: "KSh 25,000", image: "/images/products/kids-bed.jpg" },
 ];
 
-export default function CategoryPage() {
+export default function CategoryPage({products}) {
   const router = useRouter();
   const { slug } = router.query;
   const [category, subcategory] = Array.isArray(slug) ? slug : [];
 
+  console.log(products);
   const filtered = allProducts.filter(
     (p) => p.category === category && p.subcategory === subcategory
   );
@@ -41,19 +76,19 @@ export default function CategoryPage() {
         {subcategory ? `${subcategory} in ${category}` : "Category"}
       </h1>
 
-      {filtered.length === 0 ? (
+      {products.length === 0 ? (
         <p className="text-gray-600">No products found in this category.</p>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-          {filtered.map((p) => (
-            <Link href={`/products/${p.id}`} key={p.id}>
+          {products.map((p) => (
+            <Link href={`/products/${p.slug}`} key={p.id}>
               <div className="bg-gray-500 rounded shadow p-4 hover:shadow-lg cursor-pointer">
                 <img
-                  src={p.image}
-                  alt={p.title}
+                  src={p.primary_image.image_url}
+                  alt={p.name}
                   className="w-full h-40 object-cover rounded mb-3"
                 />
-                <h2 className="text-lg font-semibold mb-1">{p.title}</h2>
+                <h2 className="text-lg font-semibold mb-1">{p.name}</h2>
                 <p className="text-green-600 font-bold mb-2">{p.price}</p>
                 <button className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700">
                   Add to Cart
