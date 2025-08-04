@@ -104,12 +104,12 @@ class UserAPIView(generics.RetrieveAPIView):
 class EmailVerificationAPIView(generics.GenericAPIView):
     permission_classes = [AllowAny]
 
-    def get(self, request, user_id, token):
+    def get(self, request, uidb64, token):
         try:
-            logger.info(f"Verification request for user {user_id}")
+            logger.info(f"Verification request for user {uidb64}")
             
             from users.utils.email import EmailVerification
-            user = EmailVerification.verify_token(user_id, token)
+            user = EmailVerification.verify_token(uidb64, token)
             
             return Response(
                 {

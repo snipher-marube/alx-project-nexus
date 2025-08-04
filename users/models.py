@@ -123,17 +123,6 @@ class User(AbstractUser):
         choices=UserType.choices,
         default=UserType.CUSTOMER,
     )
-    verification_token = models.CharField(
-        _('verification token'),
-        max_length=255, 
-        blank=True, 
-        null=True
-    )
-    verification_token_created_at = models.DateTimeField(
-        _('verification token created at'),
-        blank=True,
-        null=True
-    )
 
     is_verified = models.BooleanField(
         _('verified status'),
