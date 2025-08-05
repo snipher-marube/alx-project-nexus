@@ -9,6 +9,9 @@ from django.db import transaction
 from rest_framework.exceptions import ValidationError
 from django.utils.translation import gettext as _
 
+from payments.models import Payment
+from payments.mpesa_utils import initiate_stk_push
+from decouple import config
 from .models import (
     Order, OrderItem, ShippingAddress, BillingAddress,
     Cart, CartItem
@@ -124,20 +127,13 @@ class CartViewSet(viewsets.ModelViewSet):
         try:
             with transaction.atomic():
                 # Create order
-                order_data = {
-                    'user': request.user,
-                    'status': Order.OrderStatus.PENDING,
-                    'payment_status': Order.PaymentStatus.PENDING,
-                    'payment_method': serializer.validated_data['payment_method'],
-                    'customer_notes': serializer.validated_data.get('customer_notes', ''),
-                    'ip_address': request.META.get('REMOTE_ADDR')
-                }
-                order_serializer = OrderSerializer(
-                    data=order_data,
-                    context={'request': request}
+                order = Order.objects.create(
+                    user=request.user,
+                    status=Order.OrderStatus.PENDING,
+                    payment_status=Order.PaymentStatus.PENDING,
+                    customer_notes=serializer.validated_data.get('customer_notes', ''),
+                    ip_address=request.META.get('REMOTE_ADDR')
                 )
-                order_serializer.is_valid(raise_exception=True)
-                order = order_serializer.save()
                 
                 # Create order items from cart items
                 for cart_item in cart.items.all():
@@ -174,7 +170,49 @@ class CartViewSet(viewsets.ModelViewSet):
                 # Recalculate order totals
                 order.calculate_totals()
                 order.save()
-                
+
+                # Create payment
+                payment_method = serializer.validated_data['payment_method']
+                phone_number = serializer.validated_data.get('mpesa_phone_number')
+
+                payment = Payment.objects.create(
+                    order=order,
+                    amount=order.total,
+                    currency=order.currency,
+                    method=payment_method,
+                    phone_number=phone_number,
+                    status=Payment.PaymentStatus.PENDING,
+                )
+
+                if payment_method == Order.PaymentMethod.MPESA:
+                    # Initiate STK push
+                    shortcode = config('MPESA_SHORTCODE')
+                    passkey = config('MPESA_PASSKEY')
+                    callback_url = request.build_absolute_uri('/api/v1/payments/mpesa-callback/')
+
+                    response_data = initiate_stk_push(
+                        phone_number,
+                        int(order.total),
+                        str(order.id),
+                        shortcode,
+                        passkey,
+                        callback_url
+                    )
+
+                    if response_data and response_data.get('ResponseCode') == '0':
+                        payment.mpesa_request_id = response_data['CheckoutRequestID']
+                        payment.save()
+                    else:
+                        payment.status = Payment.PaymentStatus.FAILED
+                        payment.gateway_response = response_data
+                        payment.save()
+                        order.payment_status = Order.PaymentStatus.FAILED
+                        order.save()
+                        return Response({
+                            "error": "Failed to initiate M-Pesa payment.",
+                            "details": response_data
+                        }, status=status.HTTP_400_BAD_REQUEST)
+
                 return Response(
                     OrderSerializer(order, context={'request': request}).data,
                     status=status.HTTP_201_CREATED

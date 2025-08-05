@@ -52,8 +52,10 @@ ALX Project Nexus provides comprehensive API documentation with interactive test
 #### Payment Processing
 | Endpoint | Method | Description | Auth Required |
 |----------|--------|-------------|---------------|
-| `/api/v1/payments/` | POST | Process payment | ✅ |
-| `/api/v1/payments/{id}/` | GET | Payment details | ✅ |
+| `/api/v1/payments/` | GET | List payments | ✅ (Admin) |
+| `/api/v1/payments/{id}/` | GET | Payment details | ✅ (Admin) |
+| `/api/v1/payments/mpesa-payment/` | POST | Initiate M-Pesa payment | ✅ |
+| `/api/v1/payments/mpesa-callback/` | POST | M-Pesa callback handler | ❌ |
 | `/api/v1/payments/webhooks/stripe/` | POST | Stripe webhook handler | ❌ |
 | `/api/v1/payments/refunds/` | POST | Process refund | ✅ (Admin) |
 
@@ -89,23 +91,38 @@ curl -X POST http://localhost:8000/api/v1/products/ \
 
 #### Place Order
 ```bash
-curl -X POST http://localhost:8000/api/v1/orders/ \
+curl -X POST http://localhost:8000/api/v1/cart/checkout/ \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer YOUR_KNOX_TOKEN" \
   -d '{
-    "items": [
-      {
-        "product_id": 1,
-        "quantity": 2
-      }
-    ],
     "shipping_address": {
-      "street": "123 Main St",
+      "first_name": "John",
+      "last_name": "Doe",
+      "company": "Example Corp",
+      "address_line_1": "123 Main St",
       "city": "Anytown",
       "state": "CA",
-      "zip_code": "12345",
-      "country": "US"
-    }
+      "postal_code": "12345",
+      "country": "US",
+      "phone": "+1234567890",
+      "email": "john.doe@example.com"
+    },
+    "payment_method": "mpesa",
+    "mpesa_phone_number": "254712345678",
+    "customer_notes": "Please deliver in the afternoon."
+  }'
+```
+
+#### Initiate M-Pesa Payment
+After creating an order with the M-Pesa payment method, you can initiate the payment using the following endpoint.
+
+```bash
+curl -X POST http://localhost:8000/api/v1/payments/mpesa-payment/ \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer YOUR_KNOX_TOKEN" \
+  -d '{
+    "phone_number": "254712345678",
+    "order_id": "YOUR_ORDER_ID"
   }'
 ```
 
