@@ -111,7 +111,7 @@ class CartViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['post'])
     def checkout(self, request):
         logging.info("Checkout process started.")
-        cart = self.get_object()
+        cart, created = Cart.objects.get_or_create(user=request.user)
         
         if cart.is_empty:
             return Response(
