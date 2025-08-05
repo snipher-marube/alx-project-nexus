@@ -14,7 +14,6 @@ class Payment(models.Model):
         PAYPAL = 'paypal', _('PayPal')
         BANK_TRANSFER = 'bank_transfer', _('Bank Transfer')
         MPESA = 'mpesa', _('M-Pesa')
-        
 
     class PaymentStatus(models.TextChoices):
         PENDING = 'pending', _('Pending')
@@ -31,10 +30,24 @@ class Payment(models.Model):
         related_name='payments',
         verbose_name=_('order')
     )
+    phone_number = models.CharField(
+        _('phone number'),
+        max_length=20,
+        blank=True,
+        null=True
+    )
+    mpesa_request_id = models.CharField(
+        _('M-Pesa request ID'),
+        max_length=100,
+        blank=True,
+        null=True
+    )
     transaction_id = models.CharField(
         _('transaction ID'),
         max_length=100,
-        unique=True
+        unique=True,
+        blank=True,
+        null=True
     )
     amount = models.DecimalField(
         _('amount'),
