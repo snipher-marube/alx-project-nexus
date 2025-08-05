@@ -77,19 +77,6 @@ class Order(models.Model):
         choices=PaymentStatus.choices,
         default=PaymentStatus.PENDING
     )
-    payment_method = models.CharField(
-        _('payment method'),
-        max_length=20,
-        choices=PaymentMethod.choices,
-        null=True,
-        blank=True
-    )
-    payment_transaction_id = models.CharField(
-        _('payment transaction ID'),
-        max_length=100,
-        null=True,
-        blank=True
-    )
     currency = models.CharField(
         _('currency'),
         max_length=3,
