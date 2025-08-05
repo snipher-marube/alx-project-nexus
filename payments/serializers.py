@@ -17,8 +17,13 @@ class PaymentSerializer(serializers.ModelSerializer):
         fields = [
             'id', 'transaction_id', 'amount', 'currency',
             'method', 'method_display', 'status', 'status_display',
-            'gateway_response', 'is_test', 'created_at', 'processed_at'
+            'gateway_response', 'is_test', 'created_at', 'processed_at',
+            'phone_number', 'mpesa_request_id'
         ]
         read_only_fields = [
-            'transaction_id', 'created_at', 'processed_at'
+            'transaction_id', 'created_at', 'processed_at', 'mpesa_request_id'
         ]
+
+class MpesaPaymentSerializer(serializers.Serializer):
+    phone_number = serializers.CharField(max_length=20)
+    order_id = serializers.UUIDField()
