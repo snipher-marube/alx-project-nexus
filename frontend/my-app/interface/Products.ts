@@ -46,3 +46,22 @@ export interface Product {
   quantity: number;
   is_featured: boolean;
 }
+
+export interface ProductDetail {
+  id: number;
+  name: string;
+  slug: string;
+  description: string;
+  price: number;
+  category: {
+    id: number;
+    name: string;
+    slug: string;
+    parent: number;
+  };
+  primary_image: {
+    id: number;
+    image_url: string;
+    alt_text: string;
+  };
+}

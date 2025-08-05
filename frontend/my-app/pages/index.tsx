@@ -2,7 +2,8 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import ImageCarousel from "../components/common/ImageCarousel";
-import { ProductList, ProductsResponse } from "@/interface/Products";
+import { ProductList, ProductDetail } from "@/interface/Products";
+import CategorySection from '@/components/common/CategorySection';
 
 interface CategoryList {
   id: number;
@@ -42,16 +43,22 @@ export async function getServerSideProps() {
 }
 
 
-export default function Home({products, fashionProducts }: {products: ProductList[], fashionProducts: ProductList[]}) {
+export default function Home({products}: {products: ProductList[]}) {
   const [featured, setFeatured] = useState(products);
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const [categories, setCategories] = useState<CategoryList[]>([]);
+
+  const [productsList, setProductsList] = useState([]); //all products fetched
+  const [productSlug, setProductSlug] = useState<string[]>([]); //extracted all products slugs
+  const [detailedProducts, setDetailedProducts] = useState<ProductDetail[]>([]); //saved the details of each product
+  //i did the above steps so i can extract the category value from each product so i can use it to display some products
+  //based on their category..
 
   const toggleMenu = (label: string) => {
     setOpenMenu((prev) => (prev === label ? null : label));
   };
 
-  
+  //filtering the roducts based on the featured value
   useEffect(() => {
     const featuredProducts = products.filter((product) => {
       return product.is_featured;
@@ -59,6 +66,7 @@ export default function Home({products, fashionProducts }: {products: ProductLis
     setFeatured(featuredProducts);
   }, [products]);
 
+  //fetching the categories so i can display the categories menu..
   useEffect(() => {
     const CategoryList = async () => {
       try {
@@ -80,49 +88,56 @@ export default function Home({products, fashionProducts }: {products: ProductLis
     CategoryList();
   }, []);
 
-  console.log(categories);
 
-  const menus = [
-  
-    {
-      label: "Electronics",
-      items: [
-        { name: "Mobiles", href: "/electronics/mobiles" },
-        { name: "Laptops", href: "/electronics/laptops" },
-        { name: "TVs", href: "/electronics/tvs" },
-        { name: "Cameras", href: "/electronics/cameras" },
-        { name: "Tablets", href: "/electronics/tablets" },
-        { name: "Accessories", href: "/electronics/accessories" },
-      ],
-    },
-    {
-      label: "Fashion",
-      items: [
-        { name: "Suits", href: "/fashion/suits" },
-        { name: "Shorts", href: "/fashion/Jackets" },
-        { name: "Shirts", href: "/fashion/shirts" },
-        { name: "Shoes", href: "/fashion/shoes" },
-      ],
-    },
-    {
-      label: "Home & Office",
-      items: [
-        { name: "Furniture", href: "/home/beds" },
-        { name: "Bedding", href: "/home/sofas" },
-        { name: "Kitchen", href: "/home/tables" },
-        { name: "Appliances", href: "/home/closets" },
-      ],
-    },
-    {
-      label: "Health & Beauty",
-      items: [
-        { name: "Makeup", href: "/health/makeup" },
-        { name: "Hygiene", href: "/health/hygiene" },
-        { name: "Haircare", href: "/health/haircare" },
-        { name: "Fragrance", href: "/health/fragrance" },
-      ],
-    },
-  ];
+//fetching all the products so i can extract their slugs..
+  useEffect(() => {
+    const loadProducts = async () => {
+      try {
+        const res = await fetch(`/api/product`);
+        const data = await res.json();
+
+        const products = data.results;
+        setProductsList(products);
+      } catch (error) {
+        console.error('Error loading category products:', error);
+      }
+    };
+    loadProducts();
+  }, []);
+
+  //extracting the slugs into an array so i can map thru them..
+  useEffect(() => {
+    if (Array.isArray(productsList) && productsList.length > 0) {
+      const allSlugs: string[] = productsList.map((p: any) => p.slug);
+      setProductSlug(allSlugs);
+    }
+  }, [productsList]);
+
+  //fetch each product so i can get the category value..
+  useEffect(() => {
+    const fetchProductDetails = async () => {
+      try {
+        const responses: ProductDetail[] = await Promise.all(
+          productSlug.map(async (slug) => {
+            const res = await fetch(`/api/product-slug?slug=${encodeURIComponent(slug)}`);
+            if (!res.ok) throw new Error(`Failed to fetch: ${res.status}`);
+            const data = await res.json();
+            return data.allResults;
+          })
+        );
+
+        setDetailedProducts(responses);
+      } catch (error) {
+        console.error('Error loading product details:', error);
+      }
+    };
+    if (productSlug.length > 0) {
+      fetchProductDetails();
+    }
+  }, [productSlug]);
+
+  //the array was nested so i have to flatten it..
+  const flattenedProducts = detailedProducts.flat();
 
     return (
     <main className="text-black min-h-screen bg-neutral-50-100 from-yellow-50 via-white to-stone-100 py-12 px-6">
@@ -173,7 +188,7 @@ export default function Home({products, fashionProducts }: {products: ProductLis
       {/* featured Products section */}
       <div className="max-w-7xl mx-auto mt-12 space-y-12">
         <div className="flex items-center justify-between mb-3">
-          <h2 className="text-xl font-bold text-gray-800">Featured Products {featured.length}</h2>
+          <h2 className="text-xl font-bold text-gray-800">Featured Products</h2>
           <Link href="/products" className="text-blue-600 hover:underline text-sm">
             See All
           </Link>
@@ -202,39 +217,34 @@ export default function Home({products, fashionProducts }: {products: ProductLis
           ))}
         </div>
       </div>
-{/*}
-      <div className="max-w-7xl mx-auto mt-12 space-y-12">
-        <div className="flex items-center justify-between mb-3">
-          <h2 className="text-xl font-bold text-gray-800">Fashion {fashionProducts.length}</h2>
-          <Link href="/products" className="text-blue-600 hover:underline text-sm">
-            See All
-          </Link>
-        </div>
-        <div className="flex flex-col md:flex-row gap-4 overflow-x-auto py-5">
-          {fashionProducts.map((product) => (
-            <div className="">
-              <div className="flex space-x-6">
-                <Link
-                  key={product.id}
-                  href={`/products/${product.slug}`}
-                  className="min-w-[220px] bg-neutral-50 rounded-lg shadow p-4 hover:shadow-md transition"
-                >
-                  <div>
-                    <img
-                      src={product.primary_image.image_url}
-                      alt={product.name}
-                      className="w-full h-36 object-cover mb-2 rounded"
-                    />
-                    <p className="text-sm font-medium text-gray-800">{product.name}</p>
-                    <p className="text-green-600 font-bold">{product.price}</p>
-                  </div>
-                </Link>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-*/}
+
+      {/*home appliances */}
+      <CategorySection
+        title="Clothing"
+        categoryNames={['Jackets', 'Suits', 'Shirts']}
+        products={flattenedProducts}
+      />
+
+      <CategorySection
+        title="Home Appliances"
+        categoryNames={['Home Appliances']}
+        products={flattenedProducts}
+      />
+
+      <CategorySection
+        title="Health & Beauty"
+        categoryNames={['Fragrance', 'Hygeine']}
+        products={flattenedProducts}
+      />
+
+      <CategorySection
+        title="Home "
+        categoryNames={['Bedding']}
+        products={flattenedProducts}
+      />
+
+
+
     </main>
   );
 }
