@@ -5,7 +5,7 @@ from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.filters import SearchFilter, OrderingFilter
 from django_filters.rest_framework import DjangoFilterBackend
 from django.db.models import Prefetch, Count
-from django.db import transaction
+from django.db import transaction, IntegrityError
 from rest_framework.exceptions import ValidationError
 from django.utils.translation import gettext as _
 import logging
@@ -120,7 +120,6 @@ class CartViewSet(viewsets.ModelViewSet):
                 {'error': _('Cart not found.')},
                 status=status.HTTP_404_NOT_FOUND
             )
-
         
         if cart.is_empty:
             return Response(
@@ -139,14 +138,25 @@ class CartViewSet(viewsets.ModelViewSet):
             with transaction.atomic():
                 logging.info("Creating order...")
                 # Create order
-                order = Order.objects.create(
-                    user=request.user,
-                    status=Order.OrderStatus.PENDING,
-                    payment_status=Order.PaymentStatus.PENDING,
-                    customer_notes=serializer.validated_data.get('customer_notes', ''),
-                    ip_address=request.META.get('REMOTE_ADDR')
-                )
-                logging.info(f"Order {order.id} created.")
+                try:
+                    order = Order.objects.create(
+                        user=request.user,
+                        status=Order.OrderStatus.PENDING,
+                        payment_status=Order.PaymentStatus.PENDING,
+                        customer_notes=serializer.validated_data.get('customer_notes', ''),
+                        ip_address=request.META.get('REMOTE_ADDR')
+                    )
+                    logging.info(f"Order {order.id} created.")
+                except IntegrityError:
+                    logging.error("Failed to create order due to an integrity error. Retrying...")
+                    order = Order.objects.create(
+                        user=request.user,
+                        status=Order.OrderStatus.PENDING,
+                        payment_status=Order.PaymentStatus.PENDING,
+                        customer_notes=serializer.validated_data.get('customer_notes', ''),
+                        ip_address=request.META.get('REMOTE_ADDR')
+                    )
+                    logging.info(f"Order {order.id} created on retry.")
                 
                 # Create order items from cart items
                 for cart_item in cart.items.all():

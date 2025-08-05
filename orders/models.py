@@ -169,9 +169,12 @@ class Order(models.Model):
         """
         Generate a unique order number with timestamp and random component
         """
-        timestamp = timezone.now().strftime('%Y%m%d%H%M')
-        random_part = uuid.uuid4().hex[:6].upper()
-        return f"ORD-{timestamp}-{random_part}"
+        while True:
+            timestamp = timezone.now().strftime('%Y%m%d%H%M')
+            random_part = uuid.uuid4().hex[:6].upper()
+            order_number = f"ORD-{timestamp}-{random_part}"
+            if not Order.objects.filter(number=order_number).exists():
+                return order_number
 
     def calculate_totals(self):
         """
