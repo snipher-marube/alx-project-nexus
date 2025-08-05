@@ -58,7 +58,7 @@ class Payment(models.Model):
     currency = models.CharField(
         _('currency'),
         max_length=3,
-        default='USD'
+        default='KSH'
     )
     method = models.CharField(
         _('payment method'),
