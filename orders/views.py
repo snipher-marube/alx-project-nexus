@@ -138,6 +138,7 @@ class CartViewSet(viewsets.ModelViewSet):
                     ip_address=request.META.get('REMOTE_ADDR')
                 )
                 logging.info(f"Order {order.id} created.")
+
                 
                 # Create order items from cart items
                 for cart_item in cart.items.all():
@@ -213,9 +214,11 @@ class CartViewSet(viewsets.ModelViewSet):
                 # Recalculate order totals
                 order.calculate_totals()
                 order.save()
+
                 logging.info("Order totals recalculated.")
 
                 logging.info("Creating payment...")
+
                 # Create payment
                 payment_method = serializer.validated_data['payment_method']
                 phone_number = serializer.validated_data.get('mpesa_phone_number')
@@ -232,6 +235,10 @@ class CartViewSet(viewsets.ModelViewSet):
 
                 if payment_method == Order.PaymentMethod.MPESA:
                     logging.info("Initiating M-Pesa payment...")
+
+
+                if payment_method == Order.PaymentMethod.MPESA:
+
                     # Initiate STK push
                     shortcode = config('MPESA_SHORTCODE')
                     passkey = config('MPESA_PASSKEY')
@@ -250,19 +257,24 @@ class CartViewSet(viewsets.ModelViewSet):
                         payment.mpesa_request_id = response_data['CheckoutRequestID']
                         payment.save()
                         logging.info("M-Pesa payment initiated successfully.")
+
                     else:
                         payment.status = Payment.PaymentStatus.FAILED
                         payment.gateway_response = response_data
                         payment.save()
                         order.payment_status = Order.PaymentStatus.FAILED
                         order.save()
+
                         logging.error(f"Failed to initiate M-Pesa payment: {response_data}")
+
                         return Response({
                             "error": "Failed to initiate M-Pesa payment.",
                             "details": response_data
                         }, status=status.HTTP_400_BAD_REQUEST)
 
+
                 logging.info("Checkout process completed successfully.")
+
                 return Response(
                     OrderSerializer(order, context={'request': request}).data,
                     status=status.HTTP_201_CREATED
