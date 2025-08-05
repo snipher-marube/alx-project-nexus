@@ -120,6 +120,7 @@ class CartViewSet(viewsets.ModelViewSet):
                 {'error': _('Cart not found.')},
                 status=status.HTTP_404_NOT_FOUND
             )
+
         
         if cart.is_empty:
             return Response(
@@ -234,6 +235,7 @@ class CartViewSet(viewsets.ModelViewSet):
                         }, status=status.HTTP_400_BAD_REQUEST)
 
                 logging.info("Checkout process completed successfully.")
+
                 return Response(
                     OrderSerializer(order, context={'request': request}).data,
                     status=status.HTTP_201_CREATED
