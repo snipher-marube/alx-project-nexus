@@ -8,6 +8,7 @@ from django.db.models import Prefetch, Count
 from django.db import transaction
 from rest_framework.exceptions import ValidationError
 from django.utils.translation import gettext as _
+import logging
 
 from payments.models import Payment
 from payments.mpesa_utils import initiate_stk_push
@@ -109,6 +110,7 @@ class CartViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['post'])
     def checkout(self, request):
+        logging.info("Checkout process started.")
         cart = self.get_object()
         
         if cart.is_empty:
@@ -126,6 +128,7 @@ class CartViewSet(viewsets.ModelViewSet):
         
         try:
             with transaction.atomic():
+                logging.info("Creating order...")
                 # Create order
                 order = Order.objects.create(
                     user=request.user,
@@ -134,6 +137,8 @@ class CartViewSet(viewsets.ModelViewSet):
                     customer_notes=serializer.validated_data.get('customer_notes', ''),
                     ip_address=request.META.get('REMOTE_ADDR')
                 )
+                logging.info(f"Order {order.id} created.")
+
                 
                 # Create order items from cart items
                 for cart_item in cart.items.all():
@@ -167,9 +172,52 @@ class CartViewSet(viewsets.ModelViewSet):
                 # Clear the cart
                 cart.items.all().delete()
                 
+                logging.info("Creating order items...")
+                # Create order items from cart items
+                for cart_item in cart.items.all():
+                    item_data = {
+                        'order': order,
+                        'product': cart_item.product,
+                        'variant': cart_item.variant,
+                        'quantity': cart_item.quantity,
+                        'price': cart_item.price
+                    }
+                    OrderItem.objects.create(**item_data)
+                logging.info("Order items created.")
+
+                logging.info("Creating addresses...")
+                # Create addresses
+                shipping_address_data = serializer.validated_data['shipping_address']
+                ShippingAddress.objects.create(
+                    order=order,
+                    **shipping_address_data
+                )
+
+                if serializer.validated_data['use_shipping_as_billing']:
+                    BillingAddress.objects.create(
+                        order=order,
+                        **shipping_address_data
+                    )
+                elif 'billing_address' in serializer.validated_data:
+                    BillingAddress.objects.create(
+                        order=order,
+                        **serializer.validated_data['billing_address']
+                    )
+                logging.info("Addresses created.")
+
+                logging.info("Clearing cart...")
+                # Clear the cart
+                cart.items.all().delete()
+                logging.info("Cart cleared.")
+
+                logging.info("Recalculating order totals...")
                 # Recalculate order totals
                 order.calculate_totals()
                 order.save()
+
+                logging.info("Order totals recalculated.")
+
+                logging.info("Creating payment...")
 
                 # Create payment
                 payment_method = serializer.validated_data['payment_method']
@@ -183,8 +231,14 @@ class CartViewSet(viewsets.ModelViewSet):
                     phone_number=phone_number,
                     status=Payment.PaymentStatus.PENDING,
                 )
+                logging.info(f"Payment {payment.id} created.")
 
                 if payment_method == Order.PaymentMethod.MPESA:
+                    logging.info("Initiating M-Pesa payment...")
+
+
+                if payment_method == Order.PaymentMethod.MPESA:
+
                     # Initiate STK push
                     shortcode = config('MPESA_SHORTCODE')
                     passkey = config('MPESA_PASSKEY')
@@ -202,16 +256,24 @@ class CartViewSet(viewsets.ModelViewSet):
                     if response_data and response_data.get('ResponseCode') == '0':
                         payment.mpesa_request_id = response_data['CheckoutRequestID']
                         payment.save()
+                        logging.info("M-Pesa payment initiated successfully.")
+
                     else:
                         payment.status = Payment.PaymentStatus.FAILED
                         payment.gateway_response = response_data
                         payment.save()
                         order.payment_status = Order.PaymentStatus.FAILED
                         order.save()
+
+                        logging.error(f"Failed to initiate M-Pesa payment: {response_data}")
+
                         return Response({
                             "error": "Failed to initiate M-Pesa payment.",
                             "details": response_data
                         }, status=status.HTTP_400_BAD_REQUEST)
+
+
+                logging.info("Checkout process completed successfully.")
 
                 return Response(
                     OrderSerializer(order, context={'request': request}).data,
