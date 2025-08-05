@@ -138,7 +138,6 @@ class CartViewSet(viewsets.ModelViewSet):
                     ip_address=request.META.get('REMOTE_ADDR')
                 )
                 logging.info(f"Order {order.id} created.")
-
                 
                 # Create order items from cart items
                 for cart_item in cart.items.all():
@@ -237,6 +236,7 @@ class CartViewSet(viewsets.ModelViewSet):
                     logging.info("Initiating M-Pesa payment...")
 
 
+
                 if payment_method == Order.PaymentMethod.MPESA:
 
                     # Initiate STK push
@@ -265,12 +265,14 @@ class CartViewSet(viewsets.ModelViewSet):
                         order.payment_status = Order.PaymentStatus.FAILED
                         order.save()
 
+
                         logging.error(f"Failed to initiate M-Pesa payment: {response_data}")
 
                         return Response({
                             "error": "Failed to initiate M-Pesa payment.",
                             "details": response_data
                         }, status=status.HTTP_400_BAD_REQUEST)
+
 
 
                 logging.info("Checkout process completed successfully.")
