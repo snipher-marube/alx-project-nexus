@@ -162,10 +162,8 @@ class OrderAdmin(admin.ModelAdmin):
     ]
     list_filter = [
         OrderStatusFilter, PaymentStatusFilter, 
-<<<<<<< HEAD
-=======
         DateRangeFilter, 'created_at'
->>>>>>> main
+
     ]
     search_fields = [
         'number', 'user__email', 'user__first_name', 'user__last_name',
