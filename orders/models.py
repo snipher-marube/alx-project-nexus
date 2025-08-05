@@ -77,19 +77,6 @@ class Order(models.Model):
         choices=PaymentStatus.choices,
         default=PaymentStatus.PENDING
     )
-    payment_method = models.CharField(
-        _('payment method'),
-        max_length=20,
-        choices=PaymentMethod.choices,
-        null=True,
-        blank=True
-    )
-    payment_transaction_id = models.CharField(
-        _('payment transaction ID'),
-        max_length=100,
-        null=True,
-        blank=True
-    )
     currency = models.CharField(
         _('currency'),
         max_length=3,
@@ -182,9 +169,12 @@ class Order(models.Model):
         """
         Generate a unique order number with timestamp and random component
         """
-        timestamp = timezone.now().strftime('%Y%m%d%H%M')
-        random_part = uuid.uuid4().hex[:6].upper()
-        return f"ORD-{timestamp}-{random_part}"
+        while True:
+            timestamp = timezone.now().strftime('%Y%m%d%H%M')
+            random_part = uuid.uuid4().hex[:6].upper()
+            order_number = f"ORD-{timestamp}-{random_part}"
+            if not Order.objects.filter(number=order_number).exists():
+                return order_number
 
     def calculate_totals(self):
         """
