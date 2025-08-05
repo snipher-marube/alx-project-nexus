@@ -8,6 +8,7 @@ from decimal import Decimal
 
 from products.models import Product, ProductVariant
 from products.serializers import ProductSerializer, ProductVariantSerializer
+from payments.serializers import PaymentSerializer
 from .models import (
     Order, OrderItem, ShippingAddress, BillingAddress,
     OrderStatusHistory, Cart, CartItem
@@ -91,21 +92,22 @@ class OrderSerializer(serializers.ModelSerializer):
         source='get_payment_status_display',
         read_only=True
     )
+    payments = PaymentSerializer(many=True, read_only=True)
 
     class Meta:
         model = Order
         fields = [
             'id', 'number', 'user', 'status', 'status_display',
-            'payment_status', 'payment_status_display', 'payment_method',
-            'payment_transaction_id', 'currency', 'subtotal', 'tax',
+            'payment_status', 'payment_status_display',
+            'currency', 'subtotal', 'tax',
             'shipping_cost', 'discount', 'total', 'items', 'item_count',
             'shipping_address', 'billing_address', 'customer_notes',
             'admin_notes', 'ip_address', 'created_at', 'updated_at',
-            'paid_at', 'cancelled_at'
+            'paid_at', 'cancelled_at', 'payments'
         ]
         read_only_fields = [
             'number', 'subtotal', 'tax', 'discount', 'total',
-            'item_count', 'paid_at', 'cancelled_at'
+            'item_count', 'paid_at', 'cancelled_at', 'payments'
         ]
 
     def create(self, validated_data):
@@ -239,6 +241,7 @@ class CheckoutSerializer(serializers.Serializer):
         choices=Order.PaymentMethod.choices,
         required=True
     )
+    mpesa_phone_number = serializers.CharField(required=False, allow_blank=True)
     customer_notes = serializers.CharField(required=False, allow_blank=True)
     use_shipping_as_billing = serializers.BooleanField(default=False)
 
@@ -247,4 +250,13 @@ class CheckoutSerializer(serializers.Serializer):
             raise serializers.ValidationError(
                 _("Cannot specify both billing_address and use_shipping_as_billing=True")
             )
+
+        payment_method = data.get('payment_method')
+        mpesa_phone_number = data.get('mpesa_phone_number')
+
+        if payment_method == Order.PaymentMethod.MPESA and not mpesa_phone_number:
+            raise serializers.ValidationError({
+                'mpesa_phone_number': _('This field is required for M-Pesa payments.')
+            })
+
         return data
