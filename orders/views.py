@@ -107,8 +107,8 @@ class CartViewSet(viewsets.ModelViewSet):
         cart, created = Cart.objects.get_or_create(user=self.request.user)
         return cart
 
-    @action(detail=True, methods=['post'])
-    def checkout(self, request, pk=None):
+    @action(detail=False, methods=['post'])
+    def checkout(self, request):
         cart = self.get_object()
         
         if cart.is_empty:
