@@ -170,50 +170,12 @@ class CartViewSet(viewsets.ModelViewSet):
                 
                 # Clear the cart
                 cart.items.all().delete()
-                
-                logging.info("Creating order items...")
-                # Create order items from cart items
-                for cart_item in cart.items.all():
-                    item_data = {
-                        'order': order,
-                        'product': cart_item.product,
-                        'variant': cart_item.variant,
-                        'quantity': cart_item.quantity,
-                        'price': cart_item.price
-                    }
-                    OrderItem.objects.create(**item_data)
-                logging.info("Order items created.")
-
-                logging.info("Creating addresses...")
-                # Create addresses
-                shipping_address_data = serializer.validated_data['shipping_address']
-                ShippingAddress.objects.create(
-                    order=order,
-                    **shipping_address_data
-                )
-
-                if serializer.validated_data['use_shipping_as_billing']:
-                    BillingAddress.objects.create(
-                        order=order,
-                        **shipping_address_data
-                    )
-                elif 'billing_address' in serializer.validated_data:
-                    BillingAddress.objects.create(
-                        order=order,
-                        **serializer.validated_data['billing_address']
-                    )
-                logging.info("Addresses created.")
-
-                logging.info("Clearing cart...")
-                # Clear the cart
-                cart.items.all().delete()
                 logging.info("Cart cleared.")
 
                 logging.info("Recalculating order totals...")
                 # Recalculate order totals
                 order.calculate_totals()
                 order.save()
-
                 logging.info("Order totals recalculated.")
 
                 logging.info("Creating payment...")
@@ -234,11 +196,6 @@ class CartViewSet(viewsets.ModelViewSet):
 
                 if payment_method == Order.PaymentMethod.MPESA:
                     logging.info("Initiating M-Pesa payment...")
-
-
-
-                if payment_method == Order.PaymentMethod.MPESA:
-
                     # Initiate STK push
                     shortcode = config('MPESA_SHORTCODE')
                     passkey = config('MPESA_PASSKEY')
@@ -265,15 +222,12 @@ class CartViewSet(viewsets.ModelViewSet):
                         order.payment_status = Order.PaymentStatus.FAILED
                         order.save()
 
-
                         logging.error(f"Failed to initiate M-Pesa payment: {response_data}")
 
                         return Response({
                             "error": "Failed to initiate M-Pesa payment.",
                             "details": response_data
                         }, status=status.HTTP_400_BAD_REQUEST)
-
-
 
                 logging.info("Checkout process completed successfully.")
 
