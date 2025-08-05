@@ -158,7 +158,7 @@ class OrderAdmin(admin.ModelAdmin):
     list_display = [
         'number', 'user_link', 'status_badge', 
         'payment_status_badge', 'total_amount',
-        'item_count', 'created_at', 'actions'
+        'item_count', 'created_at'
     ]
     list_filter = [
         OrderStatusFilter, PaymentStatusFilter, 
@@ -277,7 +277,7 @@ class OrderAdmin(admin.ModelAdmin):
 
     def total_amount(self, obj):
         return format_html(
-            '<strong>${}</strong>',
+            '<strong>KSH {}</strong>',
             obj.total
         )
     total_amount.short_description = _('Total')
