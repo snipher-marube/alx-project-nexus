@@ -29,3 +29,4 @@ whitenoise==6.9.0
 pytest==8.3.2
 pytest-django==4.8.0
 pytest-mock==3.14.0
+pytest-env==1.1.1
