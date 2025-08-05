@@ -129,6 +129,7 @@ class CartViewSet(viewsets.ModelViewSet):
         
         serializer = CheckoutSerializer(data=request.data, context={'request': request})
         if not serializer.is_valid():
+            logging.error(f"Serializer errors: {serializer.errors}")
             return Response(
                 serializer.errors,
                 status=status.HTTP_400_BAD_REQUEST
