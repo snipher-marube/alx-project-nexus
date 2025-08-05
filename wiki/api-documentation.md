@@ -48,6 +48,7 @@ ALX Project Nexus provides comprehensive API documentation with interactive test
 | `/api/v1/orders/{id}/status/` | PATCH | Update order status | ✅ (Admin) |
 | `/api/v1/cart/` | GET, POST, DELETE | Shopping cart operations | ✅ |
 | `/api/v1/cart/items/` | POST, PUT, DELETE | Cart item management | ✅ |
+| `/api/v1/cart/checkout/` | POST | Checkout and create order | ✅ |
 
 #### Payment Processing
 | Endpoint | Method | Description | Auth Required |
@@ -89,7 +90,7 @@ curl -X POST http://localhost:8000/api/v1/products/ \
   }'
 ```
 
-#### Place Order
+#### Place Order (Checkout)
 ```bash
 curl -X POST http://localhost:8000/api/v1/cart/checkout/ \
   -H "Content-Type: application/json" \
