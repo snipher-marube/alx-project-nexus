@@ -226,6 +226,7 @@ class CartViewSet(viewsets.ModelViewSet):
                         }, status=status.HTTP_400_BAD_REQUEST)
 
                 logging.info("Checkout process completed successfully.")
+
                 return Response(
                     OrderSerializer(order, context={'request': request}).data,
                     status=status.HTTP_201_CREATED
