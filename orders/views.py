@@ -111,7 +111,16 @@ class CartViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['post'])
     def checkout(self, request):
         logging.info("Checkout process started.")
-        cart, created = Cart.objects.get_or_create(user=request.user)
+        try:
+            cart = Cart.objects.get(user=request.user)
+            logging.info(f"Cart {cart.id} found for user {request.user.id}.")
+        except Cart.DoesNotExist:
+            logging.error(f"Cart not found for user {request.user.id}.")
+            return Response(
+                {'error': _('Cart not found.')},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
         
         if cart.is_empty:
             return Response(
