@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'knox',
     "corsheaders",
     'drf_yasg',
+    'django_extensions',
     'products',
     'users',
     'orders',
