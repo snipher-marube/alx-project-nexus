@@ -42,7 +42,6 @@ class PaymentAdmin(admin.ModelAdmin):
         'is_test',
         'created_at',
         'processed_at',
-        'actions'
     ]
     list_filter = [
         PaymentStatusFilter,

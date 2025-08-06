@@ -158,11 +158,11 @@ class OrderAdmin(admin.ModelAdmin):
     list_display = [
         'number', 'user_link', 'status_badge', 
         'payment_status_badge', 'total_amount',
-        'item_count', 'created_at', 'actions'
+        'item_count', 'created_at'
     ]
     list_filter = [
         OrderStatusFilter, PaymentStatusFilter, 
-        'payment_method', DateRangeFilter, 'created_at'
+        DateRangeFilter, 'created_at'
     ]
     search_fields = [
         'number', 'user__email', 'user__first_name', 'user__last_name',
@@ -180,8 +180,7 @@ class OrderAdmin(admin.ModelAdmin):
         (None, {
             'fields': (
                 'number', 'user', 'status', 
-                'payment_status', 'payment_method',
-                'payment_transaction_id', 'currency'
+                'payment_status', 'currency'
             )
         }),
         (_('Financials'), {
@@ -278,7 +277,7 @@ class OrderAdmin(admin.ModelAdmin):
 
     def total_amount(self, obj):
         return format_html(
-            '<strong>${}</strong>',
+            '<strong>KSH {}</strong>',
             obj.total
         )
     total_amount.short_description = _('Total')

@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 from decouple import config
+from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,7 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-$d2w73&vj#_+dc)(@if2al0_=u&gym1gw%9hw(vc6-4-lu%%=-'
+SECRET_KEY = config('SECRET_KEY')
 
 # Application definition
 
@@ -44,6 +45,7 @@ INSTALLED_APPS = [
     'users',
     'orders',
     'payments',
+    'django_extensions',
 ]
 
 SITE_ID = 1
@@ -128,6 +130,20 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'INFO',
+    },
+}
+
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
@@ -158,9 +174,9 @@ REST_FRAMEWORK = {
 # Knox settings
 REST_KNOX = {
     'USER_SERIALIZER': 'users.serializers.UserSerializer',
-    'TOKEN_TTL': None,  # Token never expires by default
-    'AUTO_REFRESH': False,
-    'MIN_REFRESH_INTERVAL': 60,  # Minimum seconds between refresh
+    'TOKEN_TTL': timedelta(hours=24),
+    'AUTO_REFRESH': True,
+    'MIN_REFRESH_INTERVAL': 60,
     'AUTH_HEADER_PREFIX': 'Token',
 }
 
