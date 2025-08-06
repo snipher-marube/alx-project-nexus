@@ -80,16 +80,14 @@ export default function ProductsPage({products, count, currentPage, pageSize }: 
       const data: ProductsResponse = await res.json();
       const productList = data.results;
 
-      //const filtered = productList.filter((product) => 
-      //  product.name.toLowerCase().includes(query.toLowerCase())
-      //);
+      
       if (productList.length < 1) {
         setFilteredProducts([]);
         setMessage(`No products found for ${query}! `);
       } else {
         setFilteredProducts(productList);
         setMessage('');
-      }
+      } 
     } catch (error) {
       setFilteredProducts([]);
       setMessage('Error fetching products');
