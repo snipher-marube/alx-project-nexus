@@ -65,3 +65,10 @@ export interface ProductDetail {
     alt_text: string;
   };
 }
+
+export interface CategoryList {
+  id: number;
+  name: string;
+  slug: string;
+  full_path: string;
+}

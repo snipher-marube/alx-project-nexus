@@ -2,57 +2,78 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import ImageCarousel from "../components/common/ImageCarousel";
-import { ProductList, ProductDetail } from "@/interface/Products";
+import { ProductList, ProductDetail, CategoryList } from "@/interface/Products";
 import CategorySection from '@/components/common/CategorySection';
 
-interface CategoryList {
-  id: number;
-  name: string;
-  slug: string;
-  full_path: string;
-}
-
 export async function getServerSideProps() {
-  let products = [];
-  let page = 1;
-  let hasNext = true;
+  let products: any[] = [];
+  let categories: any[] = [];
+
+  let productPage = 1;
+  let categoryPage = 1;
+
+  let hasNextProduct = true;
+  let hasNextCategory = true;
 
   try {
-    while (hasNext) {
-      const response = await fetch(`https://alx-project-nexus-psi.vercel.app/api/v1/products/?page=${page}`);
+    while (hasNextProduct) {
+      const response = await fetch(`https://alx-project-nexus-psi.vercel.app/api/v1/products/?page=${productPage}`);
       const data = await response.json();
 
       products.push(...data.results);
-      hasNext = !!data.links?.next;
-      page += 1;
+      hasNextProduct = !!data.links?.next;
+      productPage += 1;
     }
-    //res.status(200).json({ results: products });
+
+    while (hasNextCategory) {
+      const response = await fetch(`https://alx-project-nexus-psi.vercel.app/api/v1/categories/?page=${categoryPage}`);
+      const data = await response.json();
+
+      categories.push(...data.results);
+      hasNextCategory = !!data.links?.next;
+      categoryPage += 1;
+    }
+
+    // extracting the slugs of each product so i can get the full product detail and extract the category value
+    const slugs = products.map((p: any) => p.slug);
+
+    // Fetch product detail by slug
+    const detailedResponses = await Promise.all(
+      slugs.map(async (slug) => {
+        try {
+          const response = await fetch(`https://alx-project-nexus-psi.vercel.app/api/v1/products/${slug}/`);
+          return await response.json();
+        } catch {
+          return null;
+        }
+      })
+    );
+
+    // filter products that may return empty..
+    const detailedProducts = detailedResponses.filter(Boolean);
+
     return {
       props: {
         products,
+        categories,
+        detailedProducts,
       }
-    }
+    };
   } catch (error) {
-    //res.status(500).json({ error: "Failed to fetch products." });
     return {
       props: {
         products: [],
+        categories: [],
+        detailedProducts: [],
       }
-    }
+    };
   }
 }
 
 
-export default function Home({products}: {products: ProductList[]}) {
+export default function Home({products, categories, detailedProducts}: {products: ProductList[], categories: CategoryList[], detailedProducts: ProductDetail[]}) {
   const [featured, setFeatured] = useState(products);
   const [openMenu, setOpenMenu] = useState<string | null>(null);
-  const [categories, setCategories] = useState<CategoryList[]>([]);
-
-  const [productsList, setProductsList] = useState([]); //all products fetched
-  const [productSlug, setProductSlug] = useState<string[]>([]); //extracted all products slugs
-  const [detailedProducts, setDetailedProducts] = useState<ProductDetail[]>([]); //saved the details of each product
-  //i did the above steps so i can extract the category value from each product so i can use it to display some products
-  //based on their category..
 
   const toggleMenu = (label: string) => {
     setOpenMenu((prev) => (prev === label ? null : label));
@@ -66,80 +87,7 @@ export default function Home({products}: {products: ProductList[]}) {
     setFeatured(featuredProducts);
   }, [products]);
 
-  //fetching the categories so i can display the categories menu..
-  useEffect(() => {
-    const CategoryList = async () => {
-      try {
-        const res = await fetch('/api/category');
-        if (!res.ok) {
-          throw new Error(`Failed to fetch: ${res.status}`);
-        }
-        const data = await res.json();
-
-        console.log('Fetched category data:', data);
-
-        const category: CategoryList[] = data.results;
-
-        setCategories(category);
-      } catch(error) {
-        console.log('error fetching categories', error)
-      }
-    };
-    CategoryList();
-  }, []);
-
-
-//fetching all the products so i can extract their slugs..
-  useEffect(() => {
-    const loadProducts = async () => {
-      try {
-        const res = await fetch(`/api/product`);
-        const data = await res.json();
-
-        const products = data.results;
-        setProductsList(products);
-      } catch (error) {
-        console.error('Error loading category products:', error);
-      }
-    };
-    loadProducts();
-  }, []);
-
-  //extracting the slugs into an array so i can map thru them..
-  useEffect(() => {
-    if (Array.isArray(productsList) && productsList.length > 0) {
-      const allSlugs: string[] = productsList.map((p: any) => p.slug);
-      setProductSlug(allSlugs);
-    }
-  }, [productsList]);
-
-  //fetch each product so i can get the category value..
-  useEffect(() => {
-    const fetchProductDetails = async () => {
-      try {
-        const responses: ProductDetail[] = await Promise.all(
-          productSlug.map(async (slug) => {
-            const res = await fetch(`/api/product-slug?slug=${encodeURIComponent(slug)}`);
-            if (!res.ok) throw new Error(`Failed to fetch: ${res.status}`);
-            const data = await res.json();
-            return data.allResults;
-          })
-        );
-
-        setDetailedProducts(responses);
-      } catch (error) {
-        console.error('Error loading product details:', error);
-      }
-    };
-    if (productSlug.length > 0) {
-      fetchProductDetails();
-    }
-  }, [productSlug]);
-
-  //the array was nested so i have to flatten it..
-  const flattenedProducts = detailedProducts.flat();
-
-    return (
+  return (
     <main className="text-black min-h-screen bg-neutral-50-100 from-yellow-50 via-white to-stone-100 py-12 px-6">
       <div className="max-w-7xl mx-auto flex flex-row items-start gap-8">
         {/* Sidebar */}
@@ -218,33 +166,30 @@ export default function Home({products}: {products: ProductList[]}) {
         </div>
       </div>
 
-      {/*home appliances */}
+      {/*displaying products based on categories */}
       <CategorySection
         title="Clothing"
         categoryNames={['Jackets', 'Suits', 'Shirts']}
-        products={flattenedProducts}
+        products={detailedProducts}
       />
 
       <CategorySection
         title="Home Appliances"
         categoryNames={['Home Appliances']}
-        products={flattenedProducts}
+        products={detailedProducts}
       />
 
       <CategorySection
         title="Health & Beauty"
         categoryNames={['Fragrance', 'Hygeine']}
-        products={flattenedProducts}
+        products={detailedProducts}
       />
 
       <CategorySection
         title="Home "
         categoryNames={['Bedding']}
-        products={flattenedProducts}
+        products={detailedProducts}
       />
-
-
-
     </main>
   );
 }
