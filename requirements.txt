@@ -8,13 +8,13 @@ django-cors-headers==4.7.0
 django-filter==25.1
 django-phonenumber-field==8.1.0
 django-rest-knox==5.0.2
-djangorestframework==3.16.0
+djangorestframework==3.16.1
 drf-yasg==1.21.10
 idna==3.10
 inflection==0.5.1
 Markdown==3.8.2
 packaging==25.0
-phonenumbers==9.0.10
+phonenumbers==9.0.11
 pillow==11.3.0
 psycopg2-binary==2.9.10
 python-decouple==3.8
@@ -26,7 +26,7 @@ sqlparse==0.5.3
 uritemplate==4.2.0
 urllib3==2.5.0
 whitenoise==6.9.0
-pytest==8.3.2
+pytest==8.4.1
 pytest-django==4.11.1
 pytest-mock==3.14.1
 pytest-env==1.1.5
