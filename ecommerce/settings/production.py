@@ -40,12 +40,14 @@ DOMAIN = "https://alx-project-nexus-psi.vercel.app"
 CSRF_TRUSTED_ORIGINS = [
     'https://alx-project-nexus-psi.vercel.app',
     'http://192.168.0.26:3000',  # Add your local dev server
+    'https://alx-project-nexus-p7r4.vercel.app'
 ]
 
 # CORS Configuration - UPDATED
 CORS_ALLOWED_ORIGINS = [
     'https://alx-project-nexus-psi.vercel.app',
     'http://192.168.0.26:3000', # Add your local dev server
+    'https://alx-project-nexus-p7r4.vercel.app'
 ]
 
 # For development, you might want to allow all origins (remove in production)
