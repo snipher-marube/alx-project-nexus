@@ -20,7 +20,7 @@ psycopg2-binary==2.9.10
 python-decouple==3.8
 pytz==2025.2
 PyYAML==6.0.2
-requests==2.32.4
+requests==2.32.5
 six==1.17.0
 sqlparse==0.5.3
 uritemplate==4.2.0
