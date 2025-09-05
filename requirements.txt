@@ -20,13 +20,13 @@ psycopg2-binary==2.9.10
 python-decouple==3.8
 pytz==2025.2
 PyYAML==6.0.2
-requests==2.32.4
+requests==2.32.5
 six==1.17.0
 sqlparse==0.5.3
 uritemplate==4.2.0
 urllib3==2.5.0
 whitenoise==6.9.0
-pytest==8.4.1
+pytest==8.4.2
 pytest-django==4.11.1
 pytest-mock==3.14.1
 pytest-env==1.1.5
