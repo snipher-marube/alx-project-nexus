@@ -4,7 +4,7 @@ charset-normalizer==3.4.3
 cloudinary==1.44.1
 Django==5.2.4
 django-cloudinary-storage==0.3.0
-django-cors-headers==4.7.0
+django-cors-headers==4.8.0
 django-filter==25.1
 django-phonenumber-field==8.1.0
 django-rest-knox==5.0.2
