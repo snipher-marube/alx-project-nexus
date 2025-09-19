@@ -4,7 +4,7 @@ charset-normalizer==3.4.3
 cloudinary==1.44.1
 Django==5.2.4
 django-cloudinary-storage==0.3.0
-django-cors-headers==4.7.0
+django-cors-headers==4.9.0
 django-filter==25.1
 django-phonenumber-field==8.1.0
 django-rest-knox==5.0.2
@@ -25,9 +25,9 @@ six==1.17.0
 sqlparse==0.5.3
 uritemplate==4.2.0
 urllib3==2.5.0
-whitenoise==6.9.0
+whitenoise==6.11.0
 pytest==8.4.2
 pytest-django==4.11.1
-pytest-mock==3.14.1
+pytest-mock==3.15.1
 pytest-env==1.1.5
 django-extensions==4.1
