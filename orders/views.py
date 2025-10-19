@@ -148,6 +148,12 @@ class CartViewSet(viewsets.ModelViewSet):
                         ip_address=request.META.get('REMOTE_ADDR')
                     )
                     logging.info(f"Order {order.id} created.")
+                    try:
+                        logging.info(f"Order {order.id} created successfully with number {order.number}")
+                    except Exception as e:
+                        logging.error(f"Error creating order: {str(e)}")
+                        raise
+
                 except IntegrityError:
                     logging.error("Failed to create order due to an integrity error. Retrying...")
                     order = Order.objects.create(
@@ -218,7 +224,7 @@ class CartViewSet(viewsets.ModelViewSet):
                     # Initiate STK push
                     shortcode = config('MPESA_SHORTCODE')
                     passkey = config('MPESA_PASSKEY')
-                    callback_url = request.build_absolute_uri('/api/v1/payments/mpesa-callback/')
+                    callback_url = config('CALLBACK_URL')
 
                     response_data = initiate_stk_push(
                         phone_number,

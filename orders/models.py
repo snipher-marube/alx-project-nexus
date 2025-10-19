@@ -1,4 +1,5 @@
 import uuid
+import logging
 from django.db import models
 from django.core.validators import MinValueValidator
 from django.utils.translation import gettext_lazy as _
@@ -166,15 +167,16 @@ class Order(models.Model):
         super().save(*args, **kwargs)
 
     def generate_order_number(self):
-        """
-        Generate a unique order number with timestamp and random component
-        """
+        """Generate a unique order number with timestamp and random component"""
         while True:
             timestamp = timezone.now().strftime('%Y%m%d%H%M')
             random_part = uuid.uuid4().hex[:6].upper()
             order_number = f"ORD-{timestamp}-{random_part}"
+            logging.info(f"Generated order number: {order_number}")
             if not Order.objects.filter(number=order_number).exists():
+                logging.info(f"Using order number: {order_number}")
                 return order_number
+            logging.warning(f"Duplicate order number detected: {order_number}")
 
     def calculate_totals(self):
         """
