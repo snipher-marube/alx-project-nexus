@@ -10,7 +10,7 @@ django-phonenumber-field==8.3.0
 django-rest-knox==5.0.2
 djangorestframework==3.16.1
 drf-yasg==1.21.11
-idna==3.10
+idna==3.11
 inflection==0.5.1
 Markdown==3.9
 packaging==25.0
