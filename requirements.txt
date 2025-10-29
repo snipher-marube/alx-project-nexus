@@ -16,7 +16,7 @@ Markdown==3.9
 packaging==25.0
 phonenumbers==9.0.15
 pillow==12.0.0
-psycopg2-binary==2.9.10
+psycopg2-binary==2.9.11
 python-decouple==3.8
 pytz==2025.2
 PyYAML==6.0.3
