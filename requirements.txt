@@ -6,7 +6,7 @@ Django==5.2.8
 django-cloudinary-storage==0.3.0
 django-cors-headers==4.9.0
 django-filter==25.2
-django-phonenumber-field==8.3.0
+django-phonenumber-field==8.4.0
 django-rest-knox==5.0.2
 djangorestframework==3.16.1
 drf-yasg==1.21.11
