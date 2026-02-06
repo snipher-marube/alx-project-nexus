@@ -12,7 +12,7 @@ djangorestframework==3.16.1
 drf-yasg==1.21.11
 idna==3.11
 inflection==0.5.1
-Markdown==3.10
+Markdown==3.10.1
 packaging==25.0
 phonenumbers==9.0.21
 pillow==12.1.0
